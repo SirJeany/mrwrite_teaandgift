@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mr. Write Tea & Gift Shop — Hermanus's quirkiest coastal tea room. Loose-leaf teas, handmade gifts, live music & whale-watching vibes." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <title>Mr. Write Tea & Gift Shop — Hermanus</title>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="80">
+
+  <!-- ============================================================
+       NAVBAR — Sticky top, transparent-to-solid on scroll
+       ============================================================ -->
+  <nav id="mainNav" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <span class="brand-icon">☕</span> Mr. Write
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#events">What's On</a></li>
+          <li class="nav-item"><a class="nav-link" href="#tea-o-meter">Tea-O-Meter</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO SECTION — Big headline + steaming cup animation
+       ============================================================ -->
+  <section id="home" class="hero-section d-flex align-items-center">
+    <!-- Decorative wave overlay at bottom -->
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,64 C360,120 720,0 1080,64 C1260,96 1380,80 1440,64 L1440,120 L0,120 Z" fill="#fffdf5"/>
+      </svg>
+    </div>
+
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-7 hero-text">
+          <p class="hero-tagline">Hermanus's Quirkiest Teahouse</p>
+          <h1 class="hero-headline">
+            Where Every Cup <br/>Tells a <span class="highlight">Story</span>
+          </h1>
+          <p class="hero-sub">
+            Loose-leaf teas, handmade gifts, ocean views, and good vibes — 
+            brewed daily on the Whale Coast.
+          </p>
+          <div class="hero-cta">
+            <a href="#events" class="btn btn-primary btn-lg me-3">See What's On</a>
+            <a href="#tea-o-meter" class="btn btn-outline-light btn-lg">Find Your Tea</a>
+          </div>
+        </div>
+
+        <!-- Steaming Cup Animation -->
+        <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+          <div class="teacup-wrapper">
+            <div class="steam-container">
+              <div class="steam steam-1"></div>
+              <div class="steam steam-2"></div>
+              <div class="steam steam-3"></div>
+            </div>
+            <div class="teacup">
+              <div class="teacup-body">
+                <span class="teacup-label">Mr. Write</span>
+              </div>
+              <div class="teacup-handle"></div>
+              <div class="teacup-saucer"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT US SECTION
+       ============================================================ -->
+  <section id="about" class="section-about">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <div class="about-image-stack">
+            <div class="about-img-primary">
+              <!-- Placeholder illustrated card -->
+              <div class="illustrated-card">
+                <div class="illustrated-card-inner">
+                  <i class="bi bi-cup-hot-fill"></i>
+                  <p>Est. Hermanus</p>
+                </div>
+              </div>
+            </div>
+            <div class="about-img-accent">
+              <div class="illustrated-card illustrated-card-small">
+                <div class="illustrated-card-inner">
+                  <i class="bi bi-gift-fill"></i>
+                  <p>Gifts & Joy</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <h6 class="section-overline">Our Story</h6>
+          <h2 class="section-heading">A little shop with a <span class="highlight">big heart</span></h2>
+          <p class="section-body">
+            Tucked away in the heart of Hermanus, Mr. Write Tea & Gift Shop is where 
+            mismatched teacups meet hand-picked loose-leaf blends, and every shelf has 
+            a surprise waiting. We're not your average tea shop — we're part coastal 
+            hideaway, part curiosity cabinet, and 100% feel-good.
+          </p>
+          <p class="section-body">
+            Whether you're popping in for a perfect cuppa after a cliff-path walk, 
+            hunting for a one-of-a-kind gift, or settling in for an afternoon of 
+            live music and cake — you're home. Pull up a chair. The kettle's on.
+          </p>
+          <div class="about-stats">
+            <div class="stat-item">
+              <span class="stat-number">50+</span>
+              <span class="stat-label">Tea Varieties</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">♥</span>
+              <span class="stat-label">Made with Love</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">🐋</span>
+              <span class="stat-label">Whale Coast</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EVENTS CAROUSEL — "What's On Next"
+       ============================================================ -->
+  <section id="events" class="section-events">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h6 class="section-overline">What's On Next</h6>
+        <h2 class="section-heading">Upcoming <span class="highlight">Events</span></h2>
+        <p class="section-subtitle">Live music, tea tastings, and quirky happenings — there's always something brewing.</p>
+      </div>
+
+      <!-- Bootstrap Carousel -->
+      <div id="eventsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#eventsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Event 1"></button>
+          <button type="button" data-bs-target="#eventsCarousel" data-bs-slide-to="1" aria-label="Event 2"></button>
+          <button type="button" data-bs-target="#eventsCarousel" data-bs-slide-to="2" aria-label="Event 3"></button>
+          <button type="button" data-bs-target="#eventsCarousel" data-bs-slide-to="3" aria-label="Event 4"></button>
+        </div>
+
+        <div class="carousel-inner">
+          <!-- Event 1 -->
+          <div class="carousel-item active">
+            <div class="event-card">
+              <div class="event-card-icon"><i class="bi bi-music-note-beamed"></i></div>
+              <div class="event-card-date">
+                <span class="event-day">SAT</span>
+                <span class="event-num">19</span>
+                <span class="event-month">APR</span>
+              </div>
+              <h3 class="event-card-title">Live Jazz & Rooibos</h3>
+              <p class="event-card-desc">
+                Settle in for an evening of smooth jazz and our signature rooibos chai. 
+                Local trio "The Fynbos Notes" brings the soul.
+              </p>
+              <span class="event-card-time"><i class="bi bi-clock"></i> 6:00 PM – 9:00 PM</span>
+            </div>
+          </div>
+
+          <!-- Event 2 -->
+          <div class="carousel-item">
+            <div class="event-card">
+              <div class="event-card-icon"><i class="bi bi-cup-straw"></i></div>
+              <div class="event-card-date">
+                <span class="event-day">SUN</span>
+                <span class="event-num">27</span>
+                <span class="event-month">APR</span>
+              </div>
+              <h3 class="event-card-title">Tea Tasting Sunday</h3>
+              <p class="event-card-desc">
+                Journey through 8 hand-selected single-origin teas from around the world. 
+                Guided tasting with snack pairings included.
+              </p>
+              <span class="event-card-time"><i class="bi bi-clock"></i> 2:00 PM – 4:00 PM</span>
+            </div>
+          </div>
+
+          <!-- Event 3 -->
+          <div class="carousel-item">
+            <div class="event-card">
+              <div class="event-card-icon"><i class="bi bi-brush-fill"></i></div>
+              <div class="event-card-date">
+                <span class="event-day">FRI</span>
+                <span class="event-num">02</span>
+                <span class="event-month">MAY</span>
+              </div>
+              <h3 class="event-card-title">Paint, Sip & Steep</h3>
+              <p class="event-card-desc">
+                Grab a brush and a cuppa! Our monthly paint night returns — 
+                no experience needed, just good vibes and creative energy.
+              </p>
+              <span class="event-card-time"><i class="bi bi-clock"></i> 5:30 PM – 8:00 PM</span>
+            </div>
+          </div>
+
+          <!-- Event 4 -->
+          <div class="carousel-item">
+            <div class="event-card">
+              <div class="event-card-icon"><i class="bi bi-book-half"></i></div>
+              <div class="event-card-date">
+                <span class="event-day">SAT</span>
+                <span class="event-num">10</span>
+                <span class="event-month">MAY</span>
+              </div>
+              <h3 class="event-card-title">Story Slam & Scones</h3>
+              <p class="event-card-desc">
+                Open-mic storytelling with freshly baked scones and cream. 
+                Share a tale, hear a few, and laugh a lot.
+              </p>
+              <span class="event-card-time"><i class="bi bi-clock"></i> 3:00 PM – 5:30 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#eventsCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#eventsCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TEA-O-METER — Mood-based tea recommendation widget
+       ============================================================ -->
+  <section id="tea-o-meter" class="section-teaometer">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h6 class="section-overline">Quirky Corner</h6>
+        <h2 class="section-heading">The <span class="highlight">Tea-O-Meter</span></h2>
+        <p class="section-subtitle">Tell us your mood. We'll prescribe the perfect brew. ☕</p>
+      </div>
+
+      <div class="teaometer-widget">
+        <div class="mood-selector" id="moodSelector">
+          <p class="mood-prompt">How are you feeling right now?</p>
+          <div class="mood-options">
+            <button class="mood-btn" data-mood="happy" aria-label="Happy">
+              <span class="mood-emoji">😊</span>
+              <span class="mood-label">Happy</span>
+            </button>
+            <button class="mood-btn" data-mood="stressed" aria-label="Stressed">
+              <span class="mood-emoji">😤</span>
+              <span class="mood-label">Stressed</span>
+            </button>
+            <button class="mood-btn" data-mood="sleepy" aria-label="Sleepy">
+              <span class="mood-emoji">😴</span>
+              <span class="mood-label">Sleepy</span>
+            </button>
+            <button class="mood-btn" data-mood="adventurous" aria-label="Adventurous">
+              <span class="mood-emoji">🤠</span>
+              <span class="mood-label">Adventurous</span>
+            </button>
+            <button class="mood-btn" data-mood="cozy" aria-label="Cozy">
+              <span class="mood-emoji">🥰</span>
+              <span class="mood-label">Cozy</span>
+            </button>
+            <button class="mood-btn" data-mood="fancy" aria-label="Fancy">
+              <span class="mood-emoji">🧐</span>
+              <span class="mood-label">Fancy</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Result Card (hidden by default) -->
+        <div class="tea-result" id="teaResult" aria-live="polite">
+          <div class="tea-result-card">
+            <div class="tea-result-emoji" id="resultEmoji"></div>
+            <h3 class="tea-result-name" id="resultName"></h3>
+            <p class="tea-result-desc" id="resultDesc"></p>
+            <button class="btn btn-outline-primary btn-sm mt-3" id="tryAgainBtn">
+              <i class="bi bi-arrow-repeat"></i> Try Another Mood
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       GALLERY — Bootstrap card grid with hover zoom
+       ============================================================ -->
+  <section id="gallery" class="section-gallery">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h6 class="section-overline">Peek Inside</h6>
+        <h2 class="section-heading">Our <span class="highlight">Gallery</span></h2>
+        <p class="section-subtitle">A little window into the world of Mr. Write.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Gallery Card 1 -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="gallery-card">
+            <div class="gallery-card-img" style="background-color: #f5d98f;">
+              <i class="bi bi-cup-hot-fill gallery-placeholder-icon"></i>
+            </div>
+            <div class="gallery-card-body">
+              <h5>The Perfect Pour</h5>
+              <p>Every cup crafted with care and a smile.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Card 2 -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="gallery-card">
+            <div class="gallery-card-img" style="background-color: #b5d3ed;">
+              <i class="bi bi-shop gallery-placeholder-icon"></i>
+            </div>
+            <div class="gallery-card-body">
+              <h5>Our Cozy Corner</h5>
+              <p>Mismatched chairs, fairy lights, and good energy.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Card 3 -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="gallery-card">
+            <div class="gallery-card-img" style="background-color: #cc6818;">
+              <i class="bi bi-gift-fill gallery-placeholder-icon" style="color: #fffdf5;"></i>
+            </div>
+            <div class="gallery-card-body">
+              <h5>Handpicked Gifts</h5>
+              <p>Treasures from local artisans and makers.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Card 4 -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="gallery-card">
+            <div class="gallery-card-img" style="background-color: #3158a5;">
+              <i class="bi bi-water gallery-placeholder-icon" style="color: #b5d3ed;"></i>
+            </div>
+            <div class="gallery-card-body">
+              <h5>Ocean Views</h5>
+              <p>Steps from the famous Hermanus cliff path.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Card 5 -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="gallery-card">
+            <div class="gallery-card-img" style="background-color: #fce8c8;">
+              <i class="bi bi-music-note-beamed gallery-placeholder-icon" style="color: #cc6818;"></i>
+            </div>
+            <div class="gallery-card-body">
+              <h5>Live Sessions</h5>
+              <p>Acoustic evenings with local musicians.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Card 6 -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="gallery-card">
+            <div class="gallery-card-img" style="background-color: #ea1c29;">
+              <i class="bi bi-heart-fill gallery-placeholder-icon" style="color: #fffdf5;"></i>
+            </div>
+            <div class="gallery-card-body">
+              <h5>Community Love</h5>
+              <p>Where friends become family, one sip at a time.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT SECTION
+       ============================================================ -->
+  <section id="contact" class="section-contact">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-6">
+          <h6 class="section-overline">Get in Touch</h6>
+          <h2 class="section-heading">Come Say <span class="highlight">Hello</span></h2>
+          <p class="section-body">
+            We'd love to see you! Pop in for a cuppa, give us a ring, or find us on socials. 
+            The door's always open (well, during trading hours at least 😉).
+          </p>
+
+          <div class="contact-details">
+            <div class="contact-item">
+              <i class="bi bi-geo-alt-fill"></i>
+              <div>
+                <strong>Find Us</strong><br/>
+                Shop 3, Hermanus Village Square<br/>
+                Hermanus, Western Cape, South Africa
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="bi bi-clock-fill"></i>
+              <div>
+                <strong>Trading Hours</strong><br/>
+                Mon – Fri: 8:00 AM – 5:00 PM<br/>
+                Sat: 8:00 AM – 3:00 PM<br/>
+                Sun: 9:00 AM – 1:00 PM
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="bi bi-telephone-fill"></i>
+              <div>
+                <strong>Call Us</strong><br/>
+                <a href="tel:+27281234567">+27 28 123 4567</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="bi bi-envelope-fill"></i>
+              <div>
+                <strong>Email</strong><br/>
+                <a href="mailto:hello@mrwritetea.co.za">hello@mrwritetea.co.za</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="social-links">
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-link">
+              <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-link">
+              <i class="bi bi-facebook"></i>
+            </a>
+            <a href="https://maps.google.com/?q=Hermanus+Village+Square" target="_blank" rel="noopener noreferrer" aria-label="Google Maps" class="social-link">
+              <i class="bi bi-geo-alt-fill"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Google Maps Embed -->
+        <div class="col-lg-6">
+          <div class="map-wrapper">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3308.7!2d19.2435!3d-34.4187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDI1JzA3LjMiUyAxOcKwMTQnMzYuNiJF!5e0!3m2!1sen!2sza!4v1"
+              width="100%"
+              height="400"
+              style="border:0; border-radius: 1rem;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Mr. Write Tea & Gift Shop Location">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-4 text-center text-md-start">
+          <span class="footer-brand"><span class="brand-icon">☕</span> Mr. Write</span>
+          <p class="footer-tagline">Brewed by the sea.</p>
+        </div>
+        <div class="col-md-4 text-center">
+          <div class="footer-socials">
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="https://maps.google.com/?q=Hermanus+Village+Square" target="_blank" rel="noopener noreferrer" aria-label="Google Maps"><i class="bi bi-geo-alt-fill"></i></a>
+          </div>
+        </div>
+        <div class="col-md-4 text-center text-md-end">
+          <p class="footer-copy">&copy; <span id="currentYear"></span> Mr. Write Tea & Gift Shop</p>
+          <p class="footer-location">Hermanus, Western Cape 🇿🇦</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="bi bi-chevron-up"></i>
+  </button>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="js/main.js"></script>
+</body>
+</html>
