@@ -38,10 +38,13 @@ npx serve .
 ```
 Website/
 ├── index.html          # Main HTML page (single-page architecture)
+├── booking.html        # High Tea booking page with form & validation
 ├── css/
-│   └── style.css       # Custom styles, animations, responsive overrides
+│   ├── style.css       # Shared styles, animations, responsive overrides
+│   └── booking.css     # Booking page-specific styles
 ├── js/
-│   └── main.js         # Navbar scroll, Tea-O-Meter, animations
+│   ├── main.js         # Navbar scroll, Tea-O-Meter, animations
+│   └── booking.js      # Date logic, time slots, progress bar, form handling
 ├── images/             # Image assets (add your own photos here)
 └── README.md           # You are here
 ```
@@ -65,6 +68,7 @@ Website/
 - **Tea-O-Meter** — Interactive mood-based tea recommendation widget
 - **Gallery** — Card grid with hover zoom effects
 - **Contact** — Business details, social links, embedded Google Map
+- **Book a High Tea** — Full booking form with two-day rule, dynamic time slots, visual package cards, and brew progress bar
 - **Scroll Animations** — Intersection Observer fade-in reveals
 - **Back to Top** — Floating button with smooth scroll
 

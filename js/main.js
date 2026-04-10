@@ -50,15 +50,19 @@ function initNavbarScroll() {
 // 2. SMOOTH SCROLL & ACTIVE NAV HIGHLIGHTING
 // ----------------------------------------------------------
 function initSmoothScroll() {
-  const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+  const navLinks = document.querySelectorAll('.nav-link');
   const sections = document.querySelectorAll('section[id]');
 
   // Click handler — smooth scroll + close mobile menu
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+
+      // Only handle in-page hash links; let normal links navigate
+      if (!href.startsWith('#')) return;
+
       e.preventDefault();
-      const targetId = link.getAttribute('href');
-      const target = document.querySelector(targetId);
+      const target = document.querySelector(href);
 
       if (target) {
         target.scrollIntoView({ behavior: 'smooth' });

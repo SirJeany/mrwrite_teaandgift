@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Book a High Tea at Mr. Write Tea & Gift Shop — choose your package, pick a date, and treat yourself to a coastal tea experience in Hermanus." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Custom CSS (shared + booking-specific) -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/booking.css" />
+
+  <title>Book a High Tea — Mr. Write Tea & Gift Shop</title>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVBAR — Solid background (no hero transparency needed)
+       ============================================================ -->
+  <nav id="mainNav" class="navbar navbar-expand-lg fixed-top scrolled">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <span class="brand-icon">☕</span> Mr. Write
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#events">What's On</a></li>
+          <li class="nav-item"><a class="nav-link active" href="booking.html">Book High Tea</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       PAGE HERO — Compact banner for internal pages
+       ============================================================ -->
+  <section class="booking-hero">
+    <div class="booking-hero-pattern"></div>
+    <div class="container text-center">
+      <h6 class="section-overline" style="color: var(--clr-primary);">Treat Yourself</h6>
+      <h1 class="booking-hero-title">Book a <span class="highlight">High Tea</span></h1>
+      <p class="booking-hero-sub">
+        Scones, sandwiches, ocean breezes, and the finest brews on the Whale Coast. 
+        Pick your package and let us do the rest.
+      </p>
+    </div>
+    <!-- Wave divider -->
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,64 C360,120 720,0 1080,64 C1260,96 1380,80 1440,64 L1440,120 L0,120 Z" fill="#fffdf5"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       BOOKING FORM SECTION
+       ============================================================ -->
+  <section class="section-booking">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+
+          <!-- ================================================
+               PROGRESS BAR — Steaming cup fills as you go
+               ================================================ -->
+          <div class="brew-progress" aria-label="Form completion progress">
+            <div class="brew-progress-track">
+              <div class="brew-progress-fill" id="brewProgressFill" style="width: 0%;"></div>
+            </div>
+            <div class="brew-progress-labels">
+              <span class="brew-progress-text" id="brewProgressText">Let's start brewing…</span>
+              <span class="brew-progress-pct" id="brewProgressPct">0%</span>
+            </div>
+            <div class="brew-progress-cups">
+              <span class="brew-cup" data-step="1">☕</span>
+              <span class="brew-cup" data-step="2">☕</span>
+              <span class="brew-cup" data-step="3">☕</span>
+              <span class="brew-cup" data-step="4">☕</span>
+              <span class="brew-cup" data-step="5">☕</span>
+            </div>
+          </div>
+
+          <!-- ================================================
+               THE FORM
+               ================================================ -->
+          <form id="bookingForm" class="booking-form" novalidate>
+
+            <!-- FIELD 1: Name -->
+            <div class="booking-field" data-field="name">
+              <label for="guestName" class="booking-label">
+                <i class="bi bi-person-fill"></i> Your Name
+              </label>
+              <input
+                type="text"
+                class="form-control booking-input"
+                id="guestName"
+                placeholder="e.g. Tannie Koekemoer"
+                required
+              />
+              <div class="invalid-feedback">We need a name for the booking, love!</div>
+            </div>
+
+            <!-- FIELD 2: Date -->
+            <div class="booking-field" data-field="date">
+              <label for="bookingDate" class="booking-label">
+                <i class="bi bi-calendar-event-fill"></i> Pick a Date
+              </label>
+              <p class="booking-hint">
+                <i class="bi bi-info-circle"></i> 
+                Bookings require at least <strong>2 days' notice</strong> — we need time to bake those scones!
+              </p>
+              <input
+                type="date"
+                class="form-control booking-input"
+                id="bookingDate"
+                required
+              />
+              <div class="invalid-feedback">Please choose a date (at least 2 days from now).</div>
+            </div>
+
+            <!-- FIELD 3: Time Slot -->
+            <div class="booking-field" data-field="time">
+              <label for="bookingTime" class="booking-label">
+                <i class="bi bi-clock-fill"></i> Choose a Time
+              </label>
+              <p class="booking-hint">
+                <i class="bi bi-shop-window"></i>
+                <strong>Our hours:</strong> Mon–Fri 8 AM – 5 PM &bull; Sat 8 AM – 3 PM &bull; Sun 9 AM – 1 PM
+              </p>
+              <select class="form-select booking-input" id="bookingTime" required disabled>
+                <option value="" selected disabled>Pick a date first…</option>
+              </select>
+              <div class="invalid-feedback">Please select a time slot.</div>
+            </div>
+
+            <!-- FIELD 4: Number of Guests -->
+            <div class="booking-field" data-field="guests">
+              <label for="guestCount" class="booking-label">
+                <i class="bi bi-people-fill"></i> How Many Tea-Drinkers?
+              </label>
+              <input
+                type="number"
+                class="form-control booking-input"
+                id="guestCount"
+                min="1"
+                max="12"
+                value=""
+                placeholder="1 – 12 guests"
+                required
+              />
+              <div class="invalid-feedback">We can seat between 1 and 12 guests per booking.</div>
+            </div>
+
+            <!-- FIELD 5: Package Selection (Visual Cards) -->
+            <div class="booking-field" data-field="package">
+              <label class="booking-label">
+                <i class="bi bi-gift-fill"></i> Pick Your Package
+              </label>
+              <div class="package-cards">
+
+                <!-- Package A: The Budget Brew -->
+                <label class="package-card" for="pkgBudget">
+                  <input type="radio" name="package" id="pkgBudget" value="budget" class="package-radio" required />
+                  <div class="package-card-inner">
+                    <div class="package-icon">
+                      <i class="bi bi-cup-hot-fill"></i>
+                    </div>
+                    <h4 class="package-name">The Budget Brew</h4>
+                    <p class="package-desc">
+                      Affordable but delightful — a pot of your choice, freshly baked scones 
+                      with jam & cream, and a selection of sweet treats.
+                    </p>
+                    <span class="package-price">R 195 pp</span>
+                    <span class="package-check"><i class="bi bi-check-circle-fill"></i></span>
+                  </div>
+                </label>
+
+                <!-- Package B: The Full-on Fancy -->
+                <label class="package-card" for="pkgFancy">
+                  <input type="radio" name="package" id="pkgFancy" value="fancy" class="package-radio" required />
+                  <div class="package-card-inner">
+                    <div class="package-icon package-icon-fancy">
+                      <!-- 3-tier cake stand icon (stacked layers) -->
+                      <i class="bi bi-layers-fill"></i>
+                    </div>
+                    <h4 class="package-name">The Full-on Fancy</h4>
+                    <p class="package-desc">
+                      The works! A three-tier stand loaded with finger sandwiches, warm scones, 
+                      petit fours, and a premium tea flight.
+                    </p>
+                    <span class="package-price">R 345 pp</span>
+                    <span class="package-check"><i class="bi bi-check-circle-fill"></i></span>
+                  </div>
+                </label>
+              </div>
+              <div class="invalid-feedback d-block" id="packageError" style="display: none !important;">Please choose a package.</div>
+            </div>
+
+            <!-- FIELD 6: Special Requests / Dietary Notes -->
+            <div class="booking-field" data-field="notes">
+              <label for="specialNotes" class="booking-label">
+                <i class="bi bi-chat-heart-fill"></i> Dietary Requirements &amp; Special Requests
+              </label>
+              <textarea
+                class="form-control booking-input"
+                id="specialNotes"
+                rows="3"
+                placeholder="Gluten-free? Vegan? Birthday surprise? Tell us everything…"
+              ></textarea>
+              <p class="booking-disclaimer">
+                <i class="bi bi-emoji-smile"></i>
+                We'll do our best, but some whims are harder to catch than a Hermanus whale!
+              </p>
+            </div>
+
+            <!-- SUBMIT -->
+            <div class="booking-submit">
+              <button type="submit" class="btn btn-book" id="bookNowBtn">
+                <i class="bi bi-cup-hot-fill"></i> Book Now
+              </button>
+            </div>
+
+          </form>
+
+          <!-- ================================================
+               GALLERY CTA — Link back to gallery
+               ================================================ -->
+          <div class="gallery-cta">
+            <i class="bi bi-camera-fill"></i>
+            <a href="index.html#gallery">Need a visual? See our <strong>Gallery</strong> for a taste of what to expect →</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SUCCESS MODAL
+       ============================================================ -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content success-modal-content">
+        <div class="modal-body text-center">
+          <div class="success-emoji">🎉</div>
+          <h2 class="success-title" id="successModalLabel">You're Booked!</h2>
+          <p class="success-message" id="successMessage">
+            We can't wait to welcome you for High Tea. 
+            Keep an eye on your inbox — we'll send a confirmation shortly.
+          </p>
+          <div class="success-details" id="successDetails"></div>
+          <div class="success-note">
+            <i class="bi bi-telephone-fill"></i>
+            Questions? Ring us at <a href="tel:+27281234567">+27 28 123 4567</a>
+          </div>
+          <button type="button" class="btn btn-book mt-4" data-bs-dismiss="modal">
+            <i class="bi bi-house-fill"></i> Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FOOTER (same as index.html)
+       ============================================================ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-4 text-center text-md-start">
+          <span class="footer-brand"><span class="brand-icon">☕</span> Mr. Write</span>
+          <p class="footer-tagline">Brewed by the sea.</p>
+        </div>
+        <div class="col-md-4 text-center">
+          <div class="footer-socials">
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="https://maps.google.com/?q=Hermanus+Village+Square" target="_blank" rel="noopener noreferrer" aria-label="Google Maps"><i class="bi bi-geo-alt-fill"></i></a>
+          </div>
+        </div>
+        <div class="col-md-4 text-center text-md-end">
+          <p class="footer-copy">&copy; <span id="currentYear"></span> Mr. Write Tea & Gift Shop</p>
+          <p class="footer-location">Hermanus, Western Cape 🇿🇦</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="bi bi-chevron-up"></i>
+  </button>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="js/main.js"></script>
+  <script src="js/booking.js"></script>
+</body>
+</html>
