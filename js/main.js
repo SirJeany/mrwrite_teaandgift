@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initBackToTop();
   setCurrentYear();
+  initDynamicEvents();
 });
 
 // ----------------------------------------------------------
@@ -285,4 +286,106 @@ function setCurrentYear() {
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }
+}
+
+// ----------------------------------------------------------
+// 7. DYNAMIC EVENTS — Load from data/events.json
+// ----------------------------------------------------------
+function initDynamicEvents() {
+  const carouselEl    = document.getElementById('eventsCarousel');
+  const innerEl       = document.getElementById('eventsInner');
+  const indicatorsEl  = document.getElementById('eventsIndicators');
+  const errorEl       = document.getElementById('eventsError');
+
+  // Only run on pages that have the carousel
+  if (!innerEl || !indicatorsEl) return;
+
+  /**
+   * Month abbreviations for formatting dates.
+   */
+  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN',
+                  'JUL','AUG','SEP','OCT','NOV','DEC'];
+
+  /**
+   * Parse a YYYY-MM-DD string into a local-midnight Date.
+   */
+  function parseDate(dateStr) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
+
+  /**
+   * Build a single carousel-item's HTML.
+   */
+  function buildEventCard(evt, isActive) {
+    const d       = parseDate(evt.date);
+    const dayNum  = String(d.getDate()).padStart(2, '0');
+    const month   = MONTHS[d.getMonth()];
+    const dayName = evt.day || d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+
+    return `
+      <div class="carousel-item${isActive ? ' active' : ''}">
+        <div class="event-card">
+          <div class="event-card-icon"><i class="bi ${evt.icon}"></i></div>
+          <div class="event-card-date">
+            <span class="event-day">${dayName}</span>
+            <span class="event-num">${dayNum}</span>
+            <span class="event-month">${month}</span>
+          </div>
+          <h3 class="event-card-title">${evt.title}</h3>
+          <p class="event-card-desc">${evt.description}</p>
+          <span class="event-card-time"><i class="bi bi-clock"></i> ${evt.time}</span>
+        </div>
+      </div>`;
+  }
+
+  /**
+   * Show the error fallback and hide the carousel.
+   */
+  function showError() {
+    if (carouselEl) carouselEl.style.display = 'none';
+    if (errorEl)    errorEl.style.display = 'block';
+  }
+
+  // Fetch and render
+  fetch('data/events.json')
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(events => {
+      // Filter: only today or future events
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const upcoming = events.filter(evt => parseDate(evt.date) >= today);
+
+      if (upcoming.length === 0) {
+        showError();
+        return;
+      }
+
+      // Sort by date ascending
+      upcoming.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+
+      // Build carousel items
+      innerEl.innerHTML = upcoming
+        .map((evt, i) => buildEventCard(evt, i === 0))
+        .join('');
+
+      // Build indicators
+      indicatorsEl.innerHTML = upcoming
+        .map((_, i) =>
+          `<button type="button" data-bs-target="#eventsCarousel" data-bs-slide-to="${i}"` +
+          `${i === 0 ? ' class="active" aria-current="true"' : ''}` +
+          ` aria-label="Event ${i + 1}"></button>`
+        )
+        .join('');
+
+      // Re-initialise the Bootstrap carousel so it picks up the new items
+      if (carouselEl && typeof bootstrap !== 'undefined') {
+        new bootstrap.Carousel(carouselEl);
+      }
+    })
+    .catch(() => showError());
 }

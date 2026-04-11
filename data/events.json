@@ -1,0 +1,50 @@
+[
+  {
+    "date": "2026-04-19",
+    "day": "SAT",
+    "time": "6:00 PM – 9:00 PM",
+    "title": "Live Jazz & Rooibos",
+    "description": "Settle in for an evening of smooth jazz and our signature rooibos chai. Local trio \"The Fynbos Notes\" brings the soul.",
+    "icon": "bi-music-note-beamed"
+  },
+  {
+    "date": "2026-04-27",
+    "day": "SUN",
+    "time": "2:00 PM – 4:00 PM",
+    "title": "Tea Tasting Sunday",
+    "description": "Journey through 8 hand-selected single-origin teas from around the world. Guided tasting with snack pairings included.",
+    "icon": "bi-cup-straw"
+  },
+  {
+    "date": "2026-05-02",
+    "day": "FRI",
+    "time": "5:30 PM – 8:00 PM",
+    "title": "Paint, Sip & Steep",
+    "description": "Grab a brush and a cuppa! Our monthly paint night returns — no experience needed, just good vibes and creative energy.",
+    "icon": "bi-brush-fill"
+  },
+  {
+    "date": "2026-05-10",
+    "day": "SAT",
+    "time": "3:00 PM – 5:30 PM",
+    "title": "Story Slam & Scones",
+    "description": "Open-mic storytelling with freshly baked scones and cream. Share a tale, hear a few, and laugh a lot.",
+    "icon": "bi-book-half"
+  },
+  {
+    "date": "2026-05-24",
+    "day": "SAT",
+    "time": "6:00 PM – 9:00 PM",
+    "title": "Acoustic Sunset Session",
+    "description": "Watch the sun dip behind the mountains while local singer-songwriter Lina du Plessis performs live. Warm drinks, warmer vibes.",
+    "icon": "bi-sunset-fill"
+  },
+  {
+    "date": "2026-06-07",
+    "day": "SAT",
+    "time": "10:00 AM – 12:00 PM",
+    "title": "Winter Warmer Tasting",
+    "description": "Cozy up with our new winter tea menu — bold chais, rich rooibos blends, and spiced hot chocolate flights.",
+    "icon": "bi-snow2"
+  }
+]
