@@ -151,14 +151,19 @@ img {
   font-weight: 700;
   color: var(--clr-white) !important;
   transition: color var(--transition);
+  display: flex;
+  align-items: center;
 }
 
-.navbar.scrolled .navbar-brand {
-  color: var(--clr-text) !important;
+.navbar-logo {
+  max-height: 50px;
+  width: auto;
+  transition: filter var(--transition), opacity var(--transition);
+  filter: brightness(0) invert(1);
 }
 
-.brand-icon {
-  font-size: 1.4rem;
+.navbar.scrolled .navbar-logo {
+  filter: none;
 }
 
 .nav-link {
@@ -380,12 +385,11 @@ img {
   box-shadow: inset 0 -20px 40px rgba(204, 104, 24, 0.2);
 }
 
-.teacup-label {
-  font-family: var(--ff-heading);
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--clr-secondary);
+.teacup-logo {
+  max-height: 50px;
+  width: auto;
   margin-top: -10px;
+  filter: sepia(1) saturate(3) hue-rotate(-10deg) brightness(0.6);
 }
 
 .teacup-handle {
@@ -976,10 +980,14 @@ img {
 }
 
 .footer-brand {
-  font-family: var(--ff-heading);
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--clr-primary);
+  display: inline-block;
+}
+
+.footer-logo {
+  max-height: 50px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
 }
 
 .footer-tagline {
