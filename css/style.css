@@ -142,7 +142,7 @@ img {
   background: rgba(255, 253, 245, 0.95);
   backdrop-filter: blur(12px);
   box-shadow: var(--shadow-soft);
-  padding: 0.6rem 0;
+  padding: 0.0rem 0;
 }
 
 .navbar-brand {
@@ -156,10 +156,9 @@ img {
 }
 
 .navbar-logo {
-  max-height: 50px;
+  max-height: 90px;
   width: auto;
   transition: filter var(--transition), opacity var(--transition);
-  filter: brightness(0) invert(1);
 }
 
 .navbar.scrolled .navbar-logo {
@@ -389,7 +388,7 @@ img {
   max-height: 50px;
   width: auto;
   margin-top: -10px;
-  filter: sepia(1) saturate(3) hue-rotate(-10deg) brightness(0.6);
+  /* filter: sepia(1) saturate(3) hue-rotate(-10deg) brightness(0.6); */
 }
 
 .teacup-handle {
@@ -731,6 +730,10 @@ img {
   .mood-options {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .navbar-logo {
+    max-height: 50px;
+  }
 }
 
 .mood-btn {
@@ -986,7 +989,7 @@ img {
 .footer-logo {
   max-height: 50px;
   width: auto;
-  filter: brightness(0) invert(1);
+  /* filter: brightness(0) invert(1); */
   opacity: 0.85;
 }
 
