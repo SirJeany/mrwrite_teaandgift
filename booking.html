@@ -148,9 +148,9 @@
               <label for="bookingTime" class="booking-label">
                 <i class="bi bi-clock-fill"></i> Choose a Time
               </label>
-              <p class="booking-hint">
+              <p class="booking-hint" id="hoursHint">
                 <i class="bi bi-shop-window"></i>
-                <strong>Our hours:</strong> Mon–Fri 8 AM – 5 PM &bull; Sat 8 AM – 3 PM &bull; Sun 9 AM – 1 PM
+                <strong>Our hours:</strong> <span id="bookingHours">Loading hours…</span>
               </p>
               <select class="form-select booking-input" id="bookingTime" required disabled>
                 <option value="" selected disabled>Pick a date first…</option>

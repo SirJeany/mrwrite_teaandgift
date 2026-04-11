@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initBackToTop();
   setCurrentYear();
   initDynamicEvents();
+  initShopHours();
 });
 
 // ----------------------------------------------------------
@@ -388,4 +389,68 @@ function initDynamicEvents() {
       }
     })
     .catch(() => showError());
+}
+
+// ----------------------------------------------------------
+// 8. SHOP HOURS — Load from data/hours.json, populate both pages
+// ----------------------------------------------------------
+
+/**
+ * Shared shop-hours loader.
+ * Fetches data/hours.json once and caches the result.
+ * Returns a Promise that resolves to the parsed JSON.
+ */
+function loadShopHours() {
+  if (!loadShopHours._promise) {
+    loadShopHours._promise = fetch('data/hours.json')
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      });
+  }
+  return loadShopHours._promise;
+}
+
+/**
+ * Render trading hours into whichever container exists on the current page.
+ */
+function initShopHours() {
+  loadShopHours()
+    .then(data => {
+      const hours = data.hours;
+
+      // --- index.html: Trading Hours block ---
+      const tradingEl = document.getElementById('tradingHours');
+      if (tradingEl) {
+        tradingEl.innerHTML = hours.map(h => {
+          if (h.label) return `${h.days}: ${h.label}`;
+          return `${h.days}: ${h.open} \u2013 ${h.close}`;
+        }).join('<br/>');
+      }
+
+      // --- booking.html: Compact hours hint ---
+      const bookingEl = document.getElementById('bookingHours');
+      if (bookingEl) {
+        bookingEl.innerHTML = hours.map(h => {
+          if (h.label) return `${h.days} ${h.label}`;
+          return `${h.days} ${h.open} \u2013 ${h.close}`;
+        }).join(' &bull; ');
+      }
+
+      // Dispatch a custom event so booking.js can pick up the data
+      window.dispatchEvent(new CustomEvent('shopHoursLoaded', { detail: data }));
+    })
+    .catch(() => {
+      // Graceful fallback — set static text
+      const tradingEl = document.getElementById('tradingHours');
+      if (tradingEl) {
+        tradingEl.innerHTML = 'Mon \u2013 Fri: 7:30 \u2013 16:30<br/>Sat: 7:30 \u2013 15:00<br/>Sun: Closed';
+      }
+      const bookingEl = document.getElementById('bookingHours');
+      if (bookingEl) {
+        bookingEl.textContent = 'Mon\u2013Fri 7:30 \u2013 16:30 \u2022 Sat 7:30 \u2013 15:00 \u2022 Sun Closed';
+      }
+      // Still dispatch so booking.js can use hardcoded fallback
+      window.dispatchEvent(new CustomEvent('shopHoursLoaded', { detail: null }));
+    });
 }

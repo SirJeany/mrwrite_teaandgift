@@ -46,7 +46,7 @@ function initDatePicker() {
 }
 
 // ----------------------------------------------------------
-// 2. TIME SLOTS — Dynamic based on day of week
+// 2. TIME SLOTS — Dynamic based on day of week + hours.json
 // ----------------------------------------------------------
 function initTimeSlots() {
   const dateInput = document.getElementById('bookingDate');
@@ -54,60 +54,76 @@ function initTimeSlots() {
   if (!dateInput || !timeSelect) return;
 
   /**
-   * Time slot definitions per day type.
-   * Each slot has a value, label, and a quirky Hermanus-flavoured name.
+   * Fallback time slots in case hours.json fails to load.
+   * Matches the corrected shop hours.
    */
-  const timeSlots = {
-    // Monday – Friday: 8 AM – 5 PM
+  const fallbackSlots = {
     weekday: {
-      groupLabel: '🌊 Weekday Sittings (Mon–Fri)',
+      groupLabel: '\uD83C\uDF0A Weekday Sittings (Mon\u2013Fri)',
       slots: [
-        { value: '08:00', label: '8:00 AM — The Dawn Patrol Cuppa' },
-        { value: '09:00', label: '9:00 AM — Morning Mist Brew' },
-        { value: '10:00', label: '10:00 AM — Mid-Morning Pick-Me-Up' },
-        { value: '11:00', label: '11:00 AM — Elevenses (Obviously!)' },
-        { value: '12:00', label: '12:00 PM — Noon-Tea Delight' },
-        { value: '13:00', label: '1:00 PM — Afternoon Anchor' },
-        { value: '14:00', label: '2:00 PM — The Classic High Tea Hour' },
-        { value: '15:00', label: '3:00 PM — Post-Cliff-Path Refreshment' }
+        { value: '07:30', label: '7:30 AM \u2014 The Early Bird Brew' },
+        { value: '08:30', label: '8:30 AM \u2014 The Dawn Patrol Cuppa' },
+        { value: '09:30', label: '9:30 AM \u2014 Morning Mist Brew' },
+        { value: '10:30', label: '10:30 AM \u2014 Mid-Morning Pick-Me-Up' },
+        { value: '11:30', label: '11:30 AM \u2014 Elevenses (Obviously!)' },
+        { value: '12:30', label: '12:30 PM \u2014 Noon-Tea Delight' },
+        { value: '13:30', label: '1:30 PM \u2014 Afternoon Anchor' },
+        { value: '14:30', label: '2:30 PM \u2014 The Classic High Tea Hour' }
       ]
     },
-    // Saturday: 8 AM – 3 PM
     saturday: {
-      groupLabel: '☀️ Saturday Sittings',
+      groupLabel: '\u2600\uFE0F Saturday Sittings',
       slots: [
-        { value: '08:00', label: '8:00 AM — Early Bird Market-Goer' },
-        { value: '09:00', label: '9:00 AM — Saturday Stroll & Sip' },
-        { value: '10:00', label: '10:00 AM — Weekend Wind-Down' },
-        { value: '11:00', label: '11:00 AM — Brunch-Hour Bliss' },
-        { value: '12:00', label: '12:00 PM — Midday Indulgence' },
-        { value: '13:00', label: '1:00 PM — Post-Cliff-Path Refreshment' }
-      ]
-    },
-    // Sunday: 9 AM – 1 PM
-    sunday: {
-      groupLabel: '🌅 Sunday Sittings — The Early Bird Special',
-      slots: [
-        { value: '09:00', label: '9:00 AM — The Sunrise Sipper' },
-        { value: '10:00', label: '10:00 AM — Sunday Papers & Pot of Tea' },
-        { value: '11:00', label: '11:00 AM — Lazy Morning Luxe' }
+        { value: '07:30', label: '7:30 AM \u2014 The Early Bird Brew' },
+        { value: '08:30', label: '8:30 AM \u2014 Early Bird Market-Goer' },
+        { value: '09:30', label: '9:30 AM \u2014 Saturday Stroll & Sip' },
+        { value: '10:30', label: '10:30 AM \u2014 Weekend Wind-Down' },
+        { value: '11:30', label: '11:30 AM \u2014 Brunch-Hour Bliss' },
+        { value: '12:30', label: '12:30 PM \u2014 Midday Indulgence' },
+        { value: '13:00', label: '1:00 PM \u2014 Last Call for Tea' }
       ]
     }
   };
+
+  // Will be replaced once shopHoursLoaded fires
+  let timeSlots = fallbackSlots;
+
+  // Listen for hours data from main.js
+  window.addEventListener('shopHoursLoaded', (e) => {
+    if (e.detail && e.detail.timeSlots) {
+      timeSlots = e.detail.timeSlots;
+    }
+  });
 
   dateInput.addEventListener('change', () => {
     const selectedDate = new Date(dateInput.value + 'T00:00:00');
     const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 6 = Saturday
 
-    // Determine which slot set to use
-    let slotSet;
+    // Sunday — shop is closed, block selection
     if (dayOfWeek === 0) {
-      slotSet = timeSlots.sunday;
-    } else if (dayOfWeek === 6) {
-      slotSet = timeSlots.saturday;
-    } else {
-      slotSet = timeSlots.weekday;
+      timeSelect.innerHTML = '';
+      timeSelect.disabled = true;
+
+      const closed = document.createElement('option');
+      closed.value = '';
+      closed.textContent = '\u2615 Sorry, we\u2019re closed on Sundays!';
+      closed.disabled = true;
+      closed.selected = true;
+      timeSelect.appendChild(closed);
+
+      // Clear the date so the user must pick again
+      dateInput.value = '';
+      dateInput.setCustomValidity('We\u2019re closed on Sundays \u2014 please choose another day.');
+      dateInput.reportValidity();
+      updateBrewProgress();
+      return;
     }
+
+    // Clear any previous Sunday validity message
+    dateInput.setCustomValidity('');
+
+    // Determine which slot set to use
+    const slotSet = dayOfWeek === 6 ? timeSlots.saturday : timeSlots.weekday;
 
     // Clear and rebuild the select
     timeSelect.innerHTML = '';
@@ -116,7 +132,7 @@ function initTimeSlots() {
     // Default placeholder
     const placeholder = document.createElement('option');
     placeholder.value = '';
-    placeholder.textContent = 'Choose your sitting…';
+    placeholder.textContent = 'Choose your sitting\u2026';
     placeholder.disabled = true;
     placeholder.selected = true;
     timeSelect.appendChild(placeholder);
