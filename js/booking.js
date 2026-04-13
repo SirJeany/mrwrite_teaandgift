@@ -1,35 +1,44 @@
 /* ============================================================
-   BOOKING PAGE — JavaScript
+   BOOKING PAGE - JavaScript
    ============================================================
    Handles:
      1. Two-day rule: date min = today + 2 days
      2. Dynamic time slots based on selected day of week
      3. Brew progress bar tracking
-     4. Form validation & success modal
+     4. Dual-action submit: WhatsApp + Email
+     5. Real-time button enable/disable based on validity
+     6. WhatsApp wa.me link generation
+     7. Email modal with mailto: link generation
    ============================================================ */
 
 'use strict';
+
+// ----------------------------------------------------------
+// CONSTANTS
+// ----------------------------------------------------------
+const WHATSAPP_NUMBER = '27724734157';
+const SHOP_EMAIL = 'cafe@mrwrite.co.za';
 
 document.addEventListener('DOMContentLoaded', () => {
   initDatePicker();
   initTimeSlots();
   initBrewProgress();
-  initBookingForm();
+  initSubmitButtons();
+  initWhatsApp();
+  initEmailModal();
 });
 
 // ----------------------------------------------------------
-// 1. DATE PICKER — Two-day rule enforcement
+// 1. DATE PICKER - Two-day rule enforcement
 // ----------------------------------------------------------
 function initDatePicker() {
   const dateInput = document.getElementById('bookingDate');
   if (!dateInput) return;
 
-  // Calculate minimum date: today + 2 days
   const today = new Date();
   const minDate = new Date(today);
   minDate.setDate(today.getDate() + 2);
 
-  // Format as YYYY-MM-DD for the input min attribute
   const formatDate = (d) => {
     const year = d.getFullYear();
     const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -39,53 +48,49 @@ function initDatePicker() {
 
   dateInput.setAttribute('min', formatDate(minDate));
 
-  // Also set a max date — 3 months from now
+  // Max date: 3 months from now
   const maxDate = new Date(today);
   maxDate.setMonth(today.getMonth() + 3);
   dateInput.setAttribute('max', formatDate(maxDate));
 }
 
 // ----------------------------------------------------------
-// 2. TIME SLOTS — Dynamic based on day of week + hours.json
+// 2. TIME SLOTS - Dynamic based on day of week + hours.json
 // ----------------------------------------------------------
 function initTimeSlots() {
   const dateInput = document.getElementById('bookingDate');
   const timeSelect = document.getElementById('bookingTime');
   if (!dateInput || !timeSelect) return;
 
-  /**
-   * Fallback time slots in case hours.json fails to load.
-   * Matches the corrected shop hours.
-   */
+  /** Fallback time slots in case hours.json fails to load */
   const fallbackSlots = {
     weekday: {
-      groupLabel: '\uD83C\uDF0A Weekday Sittings (Mon\u2013Fri)',
+      groupLabel: '\uD83C\uDF0A Weekday Sittings (Mon-Fri)',
       slots: [
-        { value: '07:30', label: '7:30 AM \u2014 The Early Bird Brew' },
-        { value: '08:30', label: '8:30 AM \u2014 The Dawn Patrol Cuppa' },
-        { value: '09:30', label: '9:30 AM \u2014 Morning Mist Brew' },
-        { value: '10:30', label: '10:30 AM \u2014 Mid-Morning Pick-Me-Up' },
-        { value: '11:30', label: '11:30 AM \u2014 Elevenses (Obviously!)' },
-        { value: '12:30', label: '12:30 PM \u2014 Noon-Tea Delight' },
-        { value: '13:30', label: '1:30 PM \u2014 Afternoon Anchor' },
-        { value: '14:30', label: '2:30 PM \u2014 The Classic High Tea Hour' }
+        { value: '07:30', label: '7:30 AM - The Early Bird Brew' },
+        { value: '08:30', label: '8:30 AM - The Dawn Patrol Cuppa' },
+        { value: '09:30', label: '9:30 AM - Morning Mist Brew' },
+        { value: '10:30', label: '10:30 AM - Mid-Morning Pick-Me-Up' },
+        { value: '11:30', label: '11:30 AM - Elevenses (Obviously!)' },
+        { value: '12:30', label: '12:30 PM - Noon-Tea Delight' },
+        { value: '13:30', label: '1:30 PM - Afternoon Anchor' },
+        { value: '14:30', label: '2:30 PM - The Classic High Tea Hour' }
       ]
     },
     saturday: {
-      groupLabel: '\u2600\uFE0F Saturday Sittings',
+      groupLabel: '☀️ Saturday Sittings',
       slots: [
-        { value: '07:30', label: '7:30 AM \u2014 The Early Bird Brew' },
-        { value: '08:30', label: '8:30 AM \u2014 Early Bird Market-Goer' },
-        { value: '09:30', label: '9:30 AM \u2014 Saturday Stroll & Sip' },
-        { value: '10:30', label: '10:30 AM \u2014 Weekend Wind-Down' },
-        { value: '11:30', label: '11:30 AM \u2014 Brunch-Hour Bliss' },
-        { value: '12:30', label: '12:30 PM \u2014 Midday Indulgence' },
-        { value: '13:00', label: '1:00 PM \u2014 Last Call for Tea' }
+        { value: '07:30', label: '7:30 AM - The Early Bird Brew' },
+        { value: '08:30', label: '8:30 AM - Early Bird Market-Goer' },
+        { value: '09:30', label: '9:30 AM - Saturday Stroll & Sip' },
+        { value: '10:30', label: '10:30 AM - Weekend Wind-Down' },
+        { value: '11:30', label: '11:30 AM - Brunch-Hour Bliss' },
+        { value: '12:30', label: '12:30 PM - Midday Indulgence' },
+        { value: '13:00', label: '1:00 PM - Last Call for Tea' }
       ]
     }
   };
 
-  // Will be replaced once shopHoursLoaded fires
   let timeSlots = fallbackSlots;
 
   // Listen for hours data from main.js
@@ -97,47 +102,41 @@ function initTimeSlots() {
 
   dateInput.addEventListener('change', () => {
     const selectedDate = new Date(dateInput.value + 'T00:00:00');
-    const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 6 = Saturday
+    const dayOfWeek = selectedDate.getDay();
 
-    // Sunday — shop is closed, block selection
+    // Sunday - shop is closed
     if (dayOfWeek === 0) {
       timeSelect.innerHTML = '';
       timeSelect.disabled = true;
 
       const closed = document.createElement('option');
       closed.value = '';
-      closed.textContent = '\u2615 Sorry, we\u2019re closed on Sundays!';
+      closed.textContent = '\u2615 Sorry, we\'re closed on Sundays!';
       closed.disabled = true;
       closed.selected = true;
       timeSelect.appendChild(closed);
 
-      // Clear the date so the user must pick again
       dateInput.value = '';
-      dateInput.setCustomValidity('We\u2019re closed on Sundays \u2014 please choose another day.');
+      dateInput.setCustomValidity('We\'re closed on Sundays \u2014 please choose another day.');
       dateInput.reportValidity();
+      checkFormValidity();
       updateBrewProgress();
       return;
     }
 
-    // Clear any previous Sunday validity message
     dateInput.setCustomValidity('');
-
-    // Determine which slot set to use
     const slotSet = dayOfWeek === 6 ? timeSlots.saturday : timeSlots.weekday;
 
-    // Clear and rebuild the select
     timeSelect.innerHTML = '';
     timeSelect.disabled = false;
 
-    // Default placeholder
     const placeholder = document.createElement('option');
     placeholder.value = '';
-    placeholder.textContent = 'Choose your sitting\u2026';
+    placeholder.textContent = 'Choose your sitting...';
     placeholder.disabled = true;
     placeholder.selected = true;
     timeSelect.appendChild(placeholder);
 
-    // Create optgroup with quirky label
     const group = document.createElement('optgroup');
     group.label = slotSet.groupLabel;
 
@@ -149,34 +148,36 @@ function initTimeSlots() {
     });
 
     timeSelect.appendChild(group);
-
-    // Trigger progress update
+    checkFormValidity();
     updateBrewProgress();
   });
 }
 
 // ----------------------------------------------------------
-// 3. BREW PROGRESS BAR — Tracks form completion
+// 3. BREW PROGRESS BAR - Tracks form completion
 // ----------------------------------------------------------
-
-/** Fields tracked for progress (notes is optional, so excluded) */
 const TRACKED_FIELDS = ['name', 'date', 'time', 'guests', 'package'];
 const PROGRESS_MESSAGES = [
-  'Let\'s start brewing…',
-  'The kettle\'s on…',
-  'Water\'s warming up…',
-  'Almost steeped…',
-  'Just adding the milk…',
+  'Let\'s start brewing...',
+  'The kettle\'s on...',
+  'Water\'s warming up...',
+  'Almost steeped...',
+  'Just adding the milk...',
   'Perfect brew! ☕'
 ];
 
 function initBrewProgress() {
-  // Listen to all form field changes
   const form = document.getElementById('bookingForm');
   if (!form) return;
 
-  form.addEventListener('input', updateBrewProgress);
-  form.addEventListener('change', updateBrewProgress);
+  form.addEventListener('input', () => {
+    updateBrewProgress();
+    checkFormValidity();
+  });
+  form.addEventListener('change', () => {
+    updateBrewProgress();
+    checkFormValidity();
+  });
 }
 
 function updateBrewProgress() {
@@ -184,7 +185,6 @@ function updateBrewProgress() {
   const total = TRACKED_FIELDS.length;
   const pct = Math.round((filled / total) * 100);
 
-  // Update fill bar
   const fillEl = document.getElementById('brewProgressFill');
   const textEl = document.getElementById('brewProgressText');
   const pctEl = document.getElementById('brewProgressPct');
@@ -193,7 +193,6 @@ function updateBrewProgress() {
   if (pctEl) pctEl.textContent = `${pct}%`;
   if (textEl) textEl.textContent = PROGRESS_MESSAGES[filled] || PROGRESS_MESSAGES[PROGRESS_MESSAGES.length - 1];
 
-  // Update cup icons
   const cups = document.querySelectorAll('.brew-cup');
   cups.forEach((cup, idx) => {
     if (idx < filled) {
@@ -226,68 +225,241 @@ function countFilledFields() {
 }
 
 // ----------------------------------------------------------
-// 4. FORM VALIDATION & SUBMISSION
+// 4. SUBMIT BUTTONS - Enable/disable based on form validity
 // ----------------------------------------------------------
-function initBookingForm() {
-  const form = document.getElementById('bookingForm');
-  if (!form) return;
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+/**
+ * Checks if all required booking fields are filled correctly.
+ * Enables or disables the WhatsApp & Email buttons accordingly.
+ */
+function checkFormValidity() {
+  const btnWA = document.getElementById('btnWhatsApp');
+  const btnEmail = document.getElementById('btnEmail');
+  const instruction = document.getElementById('submitInstruction');
+  if (!btnWA || !btnEmail) return;
 
-    // Custom package validation (radios don't get native :invalid styling easily)
-    const pkg = document.querySelector('input[name="package"]:checked');
-    const pkgError = document.getElementById('packageError');
-    if (!pkg && pkgError) {
-      pkgError.style.display = 'block';
-    } else if (pkgError) {
-      pkgError.style.display = 'none';
+  const isValid = isFormComplete();
+
+  btnWA.disabled = !isValid;
+  btnEmail.disabled = !isValid;
+
+  if (instruction) {
+    if (isValid) {
+      instruction.innerHTML = '<i class="bi bi-unlock-fill"></i> All set! Choose how you\'d like to send your booking';
+      instruction.classList.add('unlocked');
+    } else {
+      instruction.innerHTML = '<i class="bi bi-lock-fill"></i> Complete all fields above to unlock your booking options';
+      instruction.classList.remove('unlocked');
     }
+  }
+}
 
-    // Guest count range check
-    const guestInput = document.getElementById('guestCount');
-    if (guestInput) {
-      const val = parseInt(guestInput.value);
-      if (isNaN(val) || val < 1 || val > 12) {
-        guestInput.setCustomValidity('Please enter between 1 and 12 guests.');
-      } else {
-        guestInput.setCustomValidity('');
-      }
-    }
+/**
+ * Validates all required fields without triggering Bootstrap validation UI.
+ * Returns true only when every required field has a valid value.
+ */
+function isFormComplete() {
+  const name = document.getElementById('guestName');
+  if (!name || name.value.trim().length === 0) return false;
 
-    // Bootstrap validation classes
-    form.classList.add('was-validated');
+  const date = document.getElementById('bookingDate');
+  if (!date || !date.value) return false;
 
-    // Check overall validity
-    if (!form.checkValidity() || !pkg) {
-      return;
-    }
+  const time = document.getElementById('bookingTime');
+  if (!time || !time.value) return false;
 
-    // ---- Form is valid — show success modal ----
-    showSuccessModal();
-  });
+  const guests = document.getElementById('guestCount');
+  const guestVal = parseInt(guests?.value);
+  if (!guests || isNaN(guestVal) || guestVal < 1 || guestVal > 12) return false;
 
-  // Clear package error on selection
-  document.querySelectorAll('input[name="package"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-      const pkgError = document.getElementById('packageError');
-      if (pkgError) pkgError.style.display = 'none';
-    });
+  const pkg = document.querySelector('input[name="package"]:checked');
+  if (!pkg) return false;
+
+  return true;
+}
+
+function initSubmitButtons() {
+  // Run initial check on load (all disabled)
+  checkFormValidity();
+}
+
+// ----------------------------------------------------------
+// 5. WHATSAPP INTEGRATION - wa.me link with formatted message
+// ----------------------------------------------------------
+function initWhatsApp() {
+  const btnWA = document.getElementById('btnWhatsApp');
+  if (!btnWA) return;
+
+  btnWA.addEventListener('click', () => {
+    if (!isFormComplete()) return;
+
+    const data = getBookingData();
+    const message = buildWhatsAppMessage(data);
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+    // Open WhatsApp in new tab
+    window.open(url, '_blank');
+
+    // Show success modal
+    populateSuccessDetails(data, 'WhatsApp');
+    const modal = new bootstrap.Modal(document.getElementById('successModal'));
+    modal.show();
   });
 }
 
-function showSuccessModal() {
+/**
+ * Builds a formatted WhatsApp message using WA markdown.
+ */
+function buildWhatsAppMessage(data) {
+  let msg = `☕ *High Tea Booking Request*\n`;
+  msg += `━━━━━━━━━━━━━━━━━━\n\n`;
+  msg += `*Name:* ${data.name}\n`;
+  msg += `*Date:* ${data.formattedDate}\n`;
+  msg += `*Time:* ${data.timeLabel}\n`;
+  msg += `*Guests:* ${data.guests}\n`;
+  msg += `*Package:* ${data.packageName}\n`;
+
+  if (data.notes) {
+    msg += `\n*Dietary / Special Requests:*\n${data.notes}\n`;
+  }
+
+  msg += `\n━━━━━━━━━━━━━━━━━━\n`;
+  msg += `_Sent from mrwritetea.co.za_ 🌊`;
+
+  return msg;
+}
+
+// ----------------------------------------------------------
+// 6. EMAIL INTEGRATION - Modal + mailto: link
+// ----------------------------------------------------------
+function initEmailModal() {
+  const btnEmail = document.getElementById('btnEmail');
+  const btnSendMail = document.getElementById('btnSendMail');
+  if (!btnEmail) return;
+
+  btnEmail.addEventListener('click', () => {
+    if (!isFormComplete()) return;
+
+    // Populate the email modal summary preview
+    const data = getBookingData();
+    const summaryEl = document.getElementById('emailSummary');
+    if (summaryEl) {
+      summaryEl.innerHTML = `
+        <p class="email-summary-title"><i class="bi bi-card-checklist"></i> Your Booking Summary</p>
+        <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
+        <p><strong>Date:</strong> ${data.formattedDate}</p>
+        <p><strong>Time:</strong> ${escapeHtml(data.timeLabel)}</p>
+        <p><strong>Guests:</strong> ${data.guests}</p>
+        <p><strong>Package:</strong> ${data.packageName}</p>
+        ${data.notes ? `<p><strong>Notes:</strong> ${escapeHtml(data.notes)}</p>` : ''}
+      `;
+    }
+
+    // Clear previous email input
+    const emailInput = document.getElementById('userEmail');
+    if (emailInput) emailInput.value = '';
+
+    // Show the email modal
+    const emailModal = new bootstrap.Modal(document.getElementById('emailModal'));
+    emailModal.show();
+  });
+
+  // Handle "Send Mail" button inside the email modal
+  if (btnSendMail) {
+    btnSendMail.addEventListener('click', () => {
+      const emailInput = document.getElementById('userEmail');
+      const email = emailInput?.value.trim();
+
+      // Validate email
+      if (!email || !isValidEmail(email)) {
+        emailInput.classList.add('is-invalid');
+        return;
+      }
+      emailInput.classList.remove('is-invalid');
+
+      const data = getBookingData();
+      const mailtoLink = buildMailtoLink(data, email);
+
+      // Open the mailto link
+      window.location.href = mailtoLink;
+
+      // Close email modal, show success
+      const emailModal = bootstrap.Modal.getInstance(document.getElementById('emailModal'));
+      emailModal?.hide();
+
+      // Brief delay so the email modal closes before success opens
+      setTimeout(() => {
+        populateSuccessDetails(data, 'Email');
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+      }, 400);
+    });
+  }
+
+  // Clear invalid state on email input when user types
+  const emailInput = document.getElementById('userEmail');
+  if (emailInput) {
+    emailInput.addEventListener('input', () => {
+      emailInput.classList.remove('is-invalid');
+    });
+  }
+}
+
+/**
+ * Builds a mailto: link with pre-populated subject and body.
+ */
+function buildMailtoLink(data, userEmail) {
+  const subject = `High Tea Booking - ${data.name} - ${data.formattedDate}`;
+
+  let body = `Hi Mr. Write Tea & Gift Shop,\n\n`;
+  body += `I'd like to book a High Tea, please!\n\n`;
+  body += `━━━━━━━━━━━━━━━━━━\n`;
+  body += `BOOKING DETAILS\n`;
+  body += `━━━━━━━━━━━━━━━━━━\n\n`;
+  body += `Name: ${data.name}\n`;
+  body += `Email: ${userEmail}\n`;
+  body += `Date: ${data.formattedDate}\n`;
+  body += `Time: ${data.timeLabel}\n`;
+  body += `Guests: ${data.guests}\n`;
+  body += `Package: ${data.packageName}\n`;
+
+  if (data.notes) {
+    body += `\nDietary / Special Requests:\n${data.notes}\n`;
+  }
+
+  body += `\n━━━━━━━━━━━━━━━━━━\n`;
+  body += `Looking forward to it!\n`;
+  body += `${data.name}`;
+
+  return `mailto:${SHOP_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+/**
+ * Basic email validation.
+ */
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// ----------------------------------------------------------
+// 7. SHARED HELPERS
+// ----------------------------------------------------------
+
+/**
+ * Extracts all booking form data into a clean object.
+ */
+function getBookingData() {
   const name = document.getElementById('guestName').value.trim();
   const date = document.getElementById('bookingDate').value;
-  const time = document.getElementById('bookingTime');
-  const timeText = time.options[time.selectedIndex]?.textContent || '';
+  const timeEl = document.getElementById('bookingTime');
+  const timeLabel = timeEl.options[timeEl.selectedIndex]?.textContent || '';
+  const timeValue = timeEl.value;
   const guests = document.getElementById('guestCount').value;
   const pkg = document.querySelector('input[name="package"]:checked');
-  const pkgName = pkg?.value === 'fancy' ? 'The Full-on Fancy' : 'The Budget Brew';
+  const packageName = pkg?.value === 'fancy' ? 'The Full-on Fancy (R345 pp)' : 'The Budget Brew (R195 pp)';
   const notes = document.getElementById('specialNotes').value.trim();
 
-  // Format the date nicely
+  // Format date nicely
   const dateObj = new Date(date + 'T00:00:00');
   const formattedDate = dateObj.toLocaleDateString('en-ZA', {
     weekday: 'long',
@@ -296,41 +468,64 @@ function showSuccessModal() {
     day: 'numeric'
   });
 
-  // Build the summary
-  const detailsEl = document.getElementById('successDetails');
-  if (detailsEl) {
-    detailsEl.innerHTML = `
-      <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-      <p><strong>Date:</strong> ${formattedDate}</p>
-      <p><strong>Time:</strong> ${escapeHtml(timeText)}</p>
-      <p><strong>Guests:</strong> ${escapeHtml(guests)}</p>
-      <p><strong>Package:</strong> ${pkgName}</p>
-      ${notes ? `<p><strong>Notes:</strong> ${escapeHtml(notes)}</p>` : ''}
-    `;
-  }
-
-  // Show the modal
-  const modal = new bootstrap.Modal(document.getElementById('successModal'));
-  modal.show();
-
-  // Reset form when modal is closed
-  const modalEl = document.getElementById('successModal');
-  modalEl.addEventListener('hidden.bs.modal', () => {
-    document.getElementById('bookingForm').reset();
-    document.getElementById('bookingForm').classList.remove('was-validated');
-    document.getElementById('bookingTime').disabled = true;
-    document.getElementById('bookingTime').innerHTML = '<option value="" selected disabled>Pick a date first…</option>';
-    updateBrewProgress();
-    // Redirect to home
-    window.location.href = 'index.html';
-  }, { once: true });
+  return { name, date, formattedDate, timeLabel, timeValue, guests, packageName, notes };
 }
 
 /**
- * Simple HTML escaping to prevent injection in the success modal.
+ * Populates the success modal with booking details.
+ */
+function populateSuccessDetails(data, method) {
+  const detailsEl = document.getElementById('successDetails');
+  const messageEl = document.getElementById('successMessage');
+
+  if (messageEl) {
+    if (method === 'WhatsApp') {
+      messageEl.textContent = 'Your booking request has been sent via WhatsApp! We\'ll reply to confirm shortly.';
+    } else {
+      messageEl.textContent = 'Your booking email is ready to send! Check your mail app and hit send. We\'ll confirm ASAP.';
+    }
+  }
+
+  if (detailsEl) {
+    detailsEl.innerHTML = `
+      <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
+      <p><strong>Date:</strong> ${data.formattedDate}</p>
+      <p><strong>Time:</strong> ${escapeHtml(data.timeLabel)}</p>
+      <p><strong>Guests:</strong> ${data.guests}</p>
+      <p><strong>Package:</strong> ${data.packageName}</p>
+      ${data.notes ? `<p><strong>Notes:</strong> ${escapeHtml(data.notes)}</p>` : ''}
+      <p class="mt-2"><strong>Sent via:</strong> <span class="badge-method badge-${method.toLowerCase()}">${method === 'WhatsApp' ? '📱 WhatsApp' : '📧 Email'}</span></p>
+    `;
+  }
+}
+
+/**
+ * Simple HTML escaping to prevent injection.
  */
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
 }
+
+// Listen for success modal close → reset form + redirect
+document.addEventListener('DOMContentLoaded', () => {
+  const modalEl = document.getElementById('successModal');
+  if (!modalEl) return;
+
+  modalEl.addEventListener('hidden.bs.modal', () => {
+    const form = document.getElementById('bookingForm');
+    if (form) {
+      form.reset();
+      form.classList.remove('was-validated');
+    }
+    const timeSelect = document.getElementById('bookingTime');
+    if (timeSelect) {
+      timeSelect.disabled = true;
+      timeSelect.innerHTML = '<option value="" selected disabled>Pick a date first...</option>';
+    }
+    updateBrewProgress();
+    checkFormValidity();
+    window.location.href = 'index.html';
+  });
+});

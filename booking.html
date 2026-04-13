@@ -238,11 +238,19 @@
               </p>
             </div>
 
-            <!-- SUBMIT -->
+            <!-- SUBMIT — Dual-action: WhatsApp + Email -->
             <div class="booking-submit">
-              <button type="submit" class="btn btn-book" id="bookNowBtn">
-                <i class="bi bi-cup-hot-fill"></i> Book Now
-              </button>
+              <p class="submit-instruction" id="submitInstruction">
+                <i class="bi bi-lock-fill"></i> Complete all fields above to unlock your booking options
+              </p>
+              <div class="submit-buttons">
+                <button type="button" class="btn btn-submit btn-whatsapp" id="btnWhatsApp" disabled>
+                  <i class="bi bi-whatsapp"></i> Submit via WhatsApp
+                </button>
+                <button type="button" class="btn btn-submit btn-email" id="btnEmail" disabled>
+                  <i class="bi bi-envelope-fill"></i> Submit via Email
+                </button>
+              </div>
             </div>
 
           </form>
@@ -261,7 +269,52 @@
   </section>
 
   <!-- ============================================================
-       SUCCESS MODAL
+       EMAIL MODAL — Step 2: Collect user email before sending
+       ============================================================ -->
+  <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content email-modal-content">
+        <div class="modal-body">
+          <div class="email-modal-step">
+            <span class="step-badge">Step 2</span>
+            <span class="step-text">Almost there!</span>
+          </div>
+          <div class="text-center">
+            <div class="email-modal-icon">✉️</div>
+            <h2 class="email-modal-title" id="emailModalLabel">Where Should We Reply?</h2>
+            <p class="email-modal-sub">
+              Pop in your email so we can confirm your booking. 
+              We'll open your mail app with everything pre-filled — one click and you're done!
+            </p>
+          </div>
+          <div class="email-field">
+            <label for="userEmail" class="booking-label">
+              <i class="bi bi-at"></i> Your Email Address
+            </label>
+            <input
+              type="email"
+              class="form-control booking-input"
+              id="userEmail"
+              placeholder="e.g. tannie@example.co.za"
+              required
+            />
+            <div class="invalid-feedback">Please enter a valid email address.</div>
+          </div>
+          <!-- Booking summary preview -->
+          <div class="email-summary" id="emailSummary"></div>
+          <div class="text-center mt-3">
+            <button type="button" class="btn btn-submit btn-email" id="btnSendMail">
+              <i class="bi bi-send-fill"></i> Send Mail
+            </button>
+          </div>
+          <button type="button" class="btn-close email-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SUCCESS MODAL — Shown after WhatsApp or Email submission
        ============================================================ -->
   <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -276,7 +329,7 @@
           <div class="success-details" id="successDetails"></div>
           <div class="success-note">
             <i class="bi bi-telephone-fill"></i>
-            Questions? Ring us at <a href="tel:+27281234567">+27 28 123 4567</a>
+            Questions? Ring us at <a href="tel:+27724734157">+27 72 473 4157</a>
           </div>
           <button type="button" class="btn btn-book mt-4" data-bs-dismiss="modal">
             <i class="bi bi-house-fill"></i> Back to Home
