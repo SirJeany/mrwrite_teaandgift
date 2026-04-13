@@ -311,11 +311,10 @@ function initWhatsApp() {
  * Builds a formatted WhatsApp message using WA markdown.
  */
 function buildWhatsAppMessage(data) {
-  let msg = `☕ *High Tea Booking Request*\n`;
+  let msg = `*High Tea Booking Request*\n`;
   msg += `━━━━━━━━━━━━━━━━━━\n\n`;
   msg += `*Name:* ${data.name}\n`;
-  msg += `*Date:* ${data.formattedDate}\n`;
-  msg += `*Time:* ${data.timeLabel}\n`;
+  msg += `*Date & Time:* ${data.formattedDate} ${data.timeValue}\n`;
   msg += `*Guests:* ${data.guests}\n`;
   msg += `*Package:* ${data.packageName}\n`;
 
@@ -324,7 +323,6 @@ function buildWhatsAppMessage(data) {
   }
 
   msg += `\n━━━━━━━━━━━━━━━━━━\n`;
-  msg += `_Sent from mrwritetea.co.za_ 🌊`;
 
   return msg;
 }
@@ -347,8 +345,7 @@ function initEmailModal() {
       summaryEl.innerHTML = `
         <p class="email-summary-title"><i class="bi bi-card-checklist"></i> Your Booking Summary</p>
         <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
-        <p><strong>Date:</strong> ${data.formattedDate}</p>
-        <p><strong>Time:</strong> ${escapeHtml(data.timeLabel)}</p>
+        <p><strong>Date & Time:</strong> ${data.formattedDate} ${escapeHtml(data.timeValue)}</p>
         <p><strong>Guests:</strong> ${data.guests}</p>
         <p><strong>Package:</strong> ${data.packageName}</p>
         ${data.notes ? `<p><strong>Notes:</strong> ${escapeHtml(data.notes)}</p>` : ''}
