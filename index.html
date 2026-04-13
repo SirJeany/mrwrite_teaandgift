@@ -272,85 +272,40 @@
         <p class="section-subtitle">A little window into the world of Mr. Write.</p>
       </div>
 
-      <div class="row g-4">
-        <!-- Gallery Card 1 -->
-        <div class="col-sm-6 col-lg-4">
-          <div class="gallery-card">
-            <div class="gallery-card-img" style="background-color: #f5d98f;">
-              <i class="bi bi-cup-hot-fill gallery-placeholder-icon"></i>
-            </div>
-            <div class="gallery-card-body">
-              <h5>The Perfect Pour</h5>
-              <p>Every cup crafted with care and a smile.</p>
-            </div>
-          </div>
-        </div>
+      <!-- Dynamic gallery grid — populated from data/gallery.json -->
+      <div class="row g-4" id="galleryGrid">
+        <!-- Cards injected by JS -->
+      </div>
 
-        <!-- Gallery Card 2 -->
-        <div class="col-sm-6 col-lg-4">
-          <div class="gallery-card">
-            <div class="gallery-card-img" style="background-color: #b5d3ed;">
-              <i class="bi bi-shop gallery-placeholder-icon"></i>
-            </div>
-            <div class="gallery-card-body">
-              <h5>Our Cozy Corner</h5>
-              <p>Mismatched chairs, fairy lights, and good energy.</p>
-            </div>
-          </div>
-        </div>
+      <!-- Fallback if JSON fails -->
+      <div class="gallery-error text-center" id="galleryError" style="display: none;">
+        <p><i class="bi bi-image"></i> Gallery is taking a tea break. Please check back soon!</p>
+      </div>
 
-        <!-- Gallery Card 3 -->
-        <div class="col-sm-6 col-lg-4">
-          <div class="gallery-card">
-            <div class="gallery-card-img" style="background-color: #cc6818;">
-              <i class="bi bi-gift-fill gallery-placeholder-icon" style="color: #fffdf5;"></i>
-            </div>
-            <div class="gallery-card-body">
-              <h5>Handpicked Gifts</h5>
-              <p>Treasures from local artisans and makers.</p>
-            </div>
-          </div>
-        </div>
+    </div>
+  </section>
 
-        <!-- Gallery Card 4 -->
-        <div class="col-sm-6 col-lg-4">
-          <div class="gallery-card">
-            <div class="gallery-card-img" style="background-color: #3158a5;">
-              <i class="bi bi-water gallery-placeholder-icon" style="color: #b5d3ed;"></i>
-            </div>
-            <div class="gallery-card-body">
-              <h5>Ocean Views</h5>
-              <p>Steps from the famous Hermanus cliff path.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Gallery Card 5 -->
-        <div class="col-sm-6 col-lg-4">
-          <div class="gallery-card">
-            <div class="gallery-card-img" style="background-color: #fce8c8;">
-              <i class="bi bi-music-note-beamed gallery-placeholder-icon" style="color: #cc6818;"></i>
-            </div>
-            <div class="gallery-card-body">
-              <h5>Live Sessions</h5>
-              <p>Acoustic evenings with local musicians.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Gallery Card 6 -->
-        <div class="col-sm-6 col-lg-4">
-          <div class="gallery-card">
-            <div class="gallery-card-img" style="background-color: #ea1c29;">
-              <i class="bi bi-heart-fill gallery-placeholder-icon" style="color: #fffdf5;"></i>
-            </div>
-            <div class="gallery-card-body">
-              <h5>Community Love</h5>
-              <p>Where friends become family, one sip at a time.</p>
-            </div>
-          </div>
+  <!-- ============================================================
+       GALLERY LIGHTBOX MODAL
+       ============================================================ -->
+  <div class="modal fade" id="galleryLightbox" tabindex="-1" aria-labelledby="lightboxLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content lightbox-content">
+        <button type="button" class="btn-close lightbox-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-body lightbox-body">
+          <img src="" alt="" id="lightboxImg" class="lightbox-img" />
+          <p class="lightbox-caption" id="lightboxCaption"></p>
+          <!-- Navigation arrows for multi-image categories -->
+          <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+          <div class="lightbox-counter" id="lightboxCounter"></div>
         </div>
       </div>
+    </div>
     </div>
   </section>
 
