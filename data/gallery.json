@@ -8,19 +8,19 @@
       "color": "#b5d3ed",
       "images": [
         {
-          "src": "images/gallery/shop/shop-front.jpg",
-          "alt": "Mr. Write shop front in Hermanus",
-          "caption": "Our little blue slice of heaven."
+          "src": "images/gallery/shop/outside-teapot.jpg",
+          "alt": "Mr. Write Hermanus",
+          "caption": "Perfect brew."
         },
         {
-          "src": "images/gallery/shop/tea-pour.jpg",
+          "src": "images/gallery/shop/tea-cosy-pink.jpeg",
           "alt": "Perfect pour of Earl Grey",
-          "caption": "The Science of the Perfect Steep ☕"
+          "caption": "The Science of the Perfect Steep 🫖"
         },
         {
-          "src": "images/gallery/shop/scones.jpg",
-          "alt": "Fresh scones with jam and cream",
-          "caption": "Scones: Jam first, then cream. No arguments! 🍓"
+          "src": "images/gallery/shop/blue-yellow-shop.jpeg",
+          "alt": "Fresh vibes1",
+          "caption": "Couch 🌻 comfort 🫐"
         }
       ]
     },
@@ -32,23 +32,33 @@
       "color": "#cc6818",
       "images": [
         {
-          "src": "images/gallery/gifts/teddy-1.jpg",
-          "alt": "A cute teddy bear on the shelf",
-          "caption": "Our cutest teddy! 🧸"
+          "src": "images/gallery/gifts/mrite-mugs-gifts.jpeg",
+          "alt": "Handmade mugs",
+          "caption": "Handmade mugs! ☕"
+        },
+        {
+          "src": "images/gallery/gifts/image-of-dog-mug.jpeg",
+          "alt": "Imagine the dogs",
+          "caption": "Everything is special 🐕"
         }
       ]
     },
     {
       "id": "events",
-      "title": "Live Sessions",
-      "subtitle": "Acoustic evenings with local musicians.",
+      "title": "Events",
+      "subtitle": "Your favourite happenings at your favourite tea-stop.",
       "icon": "bi-music-note-beamed",
       "color": "#fce8c8",
       "images": [
         {
-          "src": "images/gallery/events/live-music.jpg",
-          "alt": "Live acoustic music evening at Mr. Write",
-          "caption": "Where the music meets the mug 🎶"
+          "src": "images/gallery/events/chess-event.jpeg",
+          "alt": "Chess masterclass hosted at Mr. Write",
+          "caption": "Where we take time to think and sip quickly ♟️"
+        },
+        {
+          "src": "images/gallery/events/origami-event.jpeg",
+          "alt": "Foldit",
+          "caption": "Folding to your heart's content 🦢"
         }
       ]
     },
@@ -58,10 +68,10 @@
       "subtitle": "Art, heart, and Hermanus soul.",
       "icon": "bi-palette-fill",
       "color": "#3158a5",
-      "link": "https://www.littlewolfgallery.co.za",
+      "link": "https://littlewolfmuseum.godaddysites.com/",
       "images": [
         {
-          "src": "images/gallery/littlewolf/gallery-1.jpg",
+          "src": "images/gallery/littlewolf/little-wolf.jpg",
           "alt": "Little Wolf Gallery artwork display",
           "caption": "Our neighbours in creativity 🎨"
         }
