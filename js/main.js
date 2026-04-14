@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setCurrentYear();
   initDynamicEvents();
   initShopHours();
+  initDynamicGallery();
 });
 
 // ----------------------------------------------------------
@@ -453,4 +454,266 @@ function initShopHours() {
       // Still dispatch so booking.js can use hardcoded fallback
       window.dispatchEvent(new CustomEvent('shopHoursLoaded', { detail: null }));
     });
+}
+
+// ----------------------------------------------------------
+// 9. DYNAMIC GALLERY — Load from data/gallery.json
+// ----------------------------------------------------------
+
+/**
+ * Gallery state for the lightbox navigation.
+ * Holds the currently open category's images and active index.
+ */
+const galleryState = {
+  images: [],
+  currentIndex: 0
+};
+
+/**
+ * Tilt classes for the scrapbook effect.
+ * Applied randomly to each card.
+ */
+const TILT_CLASSES = ['tilt-1', 'tilt-2', 'tilt-3', 'tilt-4', 'tilt-5', 'tilt-6'];
+
+function initDynamicGallery() {
+  const gridEl = document.getElementById('galleryGrid');
+  const errorEl = document.getElementById('galleryError');
+
+  // Only run on pages that have the gallery grid
+  if (!gridEl) return;
+
+  fetch('data/gallery.json')
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      const categories = data.categories;
+
+      if (!categories || categories.length === 0) {
+        showGalleryError(gridEl, errorEl);
+        return;
+      }
+
+      // Build category cards
+      gridEl.innerHTML = categories.map((cat, idx) => {
+        return buildCategoryCard(cat, idx);
+      }).join('');
+
+      // Attach click handlers
+      attachGalleryClicks(categories);
+
+      // Load thumbnail images (random from each category)
+      loadThumbnails(categories);
+    })
+    .catch(() => showGalleryError(gridEl, errorEl));
+
+  // Lightbox navigation
+  initLightboxNav();
+}
+
+/**
+ * Builds HTML for a single gallery category card.
+ * If the category has a `link` property, clicking opens external URL.
+ * Otherwise clicking opens the lightbox.
+ */
+function buildCategoryCard(cat, idx) {
+  const tiltClass = TILT_CLASSES[idx % TILT_CLASSES.length];
+  const hasLink = !!cat.link;
+  const imageCount = cat.images ? cat.images.length : 0;
+  const iconColor = isLightColor(cat.color) ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.4)';
+
+  return `
+    <div class="col-sm-6 col-lg-4">
+      <div class="gallery-card ${tiltClass}" 
+           data-category-id="${cat.id}" 
+           ${hasLink ? `data-external-link="${cat.link}"` : ''}
+           role="button" 
+           tabindex="0"
+           aria-label="${hasLink ? 'Visit ' + cat.title : 'View ' + cat.title + ' photos'}">
+        <div class="gallery-card-img" 
+             id="thumb-${cat.id}" 
+             style="background-color: ${cat.color};">
+          <i class="bi ${cat.icon} gallery-placeholder-icon" style="color: ${iconColor};"></i>
+          ${hasLink ? '<span class="gallery-link-badge"><i class="bi bi-box-arrow-up-right"></i> Visit</span>' : ''}
+          ${imageCount > 1 ? `<span class="gallery-count-badge"><i class="bi bi-images"></i> ${imageCount}</span>` : ''}
+        </div>
+        <div class="gallery-card-body">
+          <h5>${cat.title}</h5>
+          <p>${cat.subtitle}</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+/**
+ * Loads a random thumbnail image from each category.
+ * Falls back to the placeholder icon if the image fails to load.
+ */
+function loadThumbnails(categories) {
+  categories.forEach(cat => {
+    if (!cat.images || cat.images.length === 0) return;
+
+    // Pick a random image from the category
+    const randomImg = cat.images[Math.floor(Math.random() * cat.images.length)];
+    const thumbEl = document.getElementById(`thumb-${cat.id}`);
+    if (!thumbEl) return;
+
+    // Create an img element and test if it loads
+    const img = new Image();
+    img.onload = () => {
+      // Replace the placeholder icon with the real image
+      thumbEl.innerHTML = '';
+      const imgEl = document.createElement('img');
+      imgEl.src = randomImg.src;
+      imgEl.alt = randomImg.alt;
+      imgEl.loading = 'lazy';
+      thumbEl.appendChild(imgEl);
+
+      // Re-add badges if needed
+      const card = thumbEl.closest('.gallery-card');
+      if (card?.dataset.externalLink) {
+        thumbEl.insertAdjacentHTML('beforeend', 
+          '<span class="gallery-link-badge"><i class="bi bi-box-arrow-up-right"></i> Visit</span>');
+      }
+      if (cat.images.length > 1) {
+        thumbEl.insertAdjacentHTML('beforeend', 
+          `<span class="gallery-count-badge"><i class="bi bi-images"></i> ${cat.images.length}</span>`);
+      }
+    };
+    // If image fails, just keep the placeholder icon
+    img.src = randomImg.src;
+  });
+}
+
+/**
+ * Attaches click handlers to gallery cards.
+ * External-link cards open in a new tab.
+ * Regular cards open the lightbox.
+ */
+function attachGalleryClicks(categories) {
+  document.querySelectorAll('.gallery-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const externalLink = card.dataset.externalLink;
+      if (externalLink) {
+        window.open(externalLink, '_blank', 'noopener,noreferrer');
+        return;
+      }
+
+      const catId = card.dataset.categoryId;
+      const cat = categories.find(c => c.id === catId);
+      if (!cat || !cat.images || cat.images.length === 0) return;
+
+      // Open lightbox with first image
+      galleryState.images = cat.images;
+      galleryState.currentIndex = 0;
+      openLightbox(0);
+    });
+
+    // Keyboard accessibility
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
+}
+
+/**
+ * Opens the lightbox modal at the given image index.
+ */
+function openLightbox(index) {
+  const images = galleryState.images;
+  if (!images || images.length === 0) return;
+
+  galleryState.currentIndex = index;
+  const img = images[index];
+
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCaption = document.getElementById('lightboxCaption');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  const prevBtn = document.getElementById('lightboxPrev');
+  const nextBtn = document.getElementById('lightboxNext');
+
+  if (lightboxImg) {
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+  }
+  if (lightboxCaption) {
+    lightboxCaption.textContent = img.caption;
+  }
+
+  // Show/hide nav arrows and counter
+  const hasMultiple = images.length > 1;
+  if (prevBtn) prevBtn.style.display = hasMultiple ? 'flex' : 'none';
+  if (nextBtn) nextBtn.style.display = hasMultiple ? 'flex' : 'none';
+  if (lightboxCounter) {
+    lightboxCounter.style.display = hasMultiple ? 'block' : 'none';
+    lightboxCounter.textContent = `${index + 1} / ${images.length}`;
+  }
+
+  // Show the modal
+  const modalEl = document.getElementById('galleryLightbox');
+  if (modalEl && typeof bootstrap !== 'undefined') {
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modal.show();
+  }
+}
+
+/**
+ * Initialises lightbox prev/next navigation + keyboard controls.
+ */
+function initLightboxNav() {
+  const prevBtn = document.getElementById('lightboxPrev');
+  const nextBtn = document.getElementById('lightboxNext');
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const images = galleryState.images;
+      const newIndex = (galleryState.currentIndex - 1 + images.length) % images.length;
+      openLightbox(newIndex);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const images = galleryState.images;
+      const newIndex = (galleryState.currentIndex + 1) % images.length;
+      openLightbox(newIndex);
+    });
+  }
+
+  // Keyboard navigation when lightbox is open
+  document.addEventListener('keydown', (e) => {
+    const modalEl = document.getElementById('galleryLightbox');
+    if (!modalEl || !modalEl.classList.contains('show')) return;
+
+    if (e.key === 'ArrowLeft') {
+      prevBtn?.click();
+    } else if (e.key === 'ArrowRight') {
+      nextBtn?.click();
+    }
+  });
+}
+
+/**
+ * Shows the gallery error fallback.
+ */
+function showGalleryError(gridEl, errorEl) {
+  if (gridEl) gridEl.style.display = 'none';
+  if (errorEl) errorEl.style.display = 'block';
+}
+
+/**
+ * Rough check if a hex colour is light (for choosing icon contrast).
+ */
+function isLightColor(hex) {
+  const c = hex.replace('#', '');
+  const r = parseInt(c.substring(0, 2), 16);
+  const g = parseInt(c.substring(2, 4), 16);
+  const b = parseInt(c.substring(4, 6), 16);
+  return (r * 0.299 + g * 0.587 + b * 0.114) > 160;
 }

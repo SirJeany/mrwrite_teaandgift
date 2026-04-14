@@ -1,0 +1,81 @@
+{
+  "categories": [
+    {
+      "id": "shop",
+      "title": "Our Cozy Corner",
+      "subtitle": "Mismatched chairs, fairy lights, and good energy.",
+      "icon": "bi-shop",
+      "color": "#b5d3ed",
+      "images": [
+        {
+          "src": "images/gallery/shop/outside-teapot.jpg",
+          "alt": "Mr. Write Hermanus",
+          "caption": "Perfect brew."
+        },
+        {
+          "src": "images/gallery/shop/tea-cosy-pink.jpeg",
+          "alt": "Perfect pour of Earl Grey",
+          "caption": "The Science of the Perfect Steep 🫖"
+        },
+        {
+          "src": "images/gallery/shop/blue-yellow-shop.jpeg",
+          "alt": "Fresh vibes1",
+          "caption": "Couch 🌻 comfort 🫐"
+        }
+      ]
+    },
+    {
+      "id": "gifts",
+      "title": "Handpicked Gifts",
+      "subtitle": "Treasures from local artisans and makers.",
+      "icon": "bi-gift-fill",
+      "color": "#cc6818",
+      "images": [
+        {
+          "src": "images/gallery/gifts/mrite-mugs-gifts.jpeg",
+          "alt": "Handmade mugs",
+          "caption": "Handmade mugs! ☕"
+        },
+        {
+          "src": "images/gallery/gifts/image-of-dog-mug.jpeg",
+          "alt": "Imagine the dogs",
+          "caption": "Everything is special 🐕"
+        }
+      ]
+    },
+    {
+      "id": "events",
+      "title": "Events",
+      "subtitle": "Your favourite happenings at your favourite tea-stop.",
+      "icon": "bi-music-note-beamed",
+      "color": "#fce8c8",
+      "images": [
+        {
+          "src": "images/gallery/events/chess-event.jpeg",
+          "alt": "Chess masterclass hosted at Mr. Write",
+          "caption": "Where we take time to think and sip quickly ♟️"
+        },
+        {
+          "src": "images/gallery/events/origami-event.jpeg",
+          "alt": "Foldit",
+          "caption": "Folding to your heart's content 🦢"
+        }
+      ]
+    },
+    {
+      "id": "littlewolf",
+      "title": "Little Wolf Gallery",
+      "subtitle": "Art, heart, and Hermanus soul.",
+      "icon": "bi-palette-fill",
+      "color": "#3158a5",
+      "link": "https://littlewolfmuseum.godaddysites.com/",
+      "images": [
+        {
+          "src": "images/gallery/littlewolf/little-wolf.jpg",
+          "alt": "Little Wolf Gallery artwork display",
+          "caption": "Our neighbours in creativity 🎨"
+        }
+      ]
+    }
+  ]
+}
