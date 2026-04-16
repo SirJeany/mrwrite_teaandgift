@@ -15,7 +15,7 @@
 // ----------------------------------------------------------
 // API ENDPOINTS
 // ----------------------------------------------------------
-const EVENTS_API_URL = 'https://events.mrwrite.co.za/api/public/events/bettys-current-times/public-holidays';
+const EVENTS_API_URL = 'https://events.mrwrite.co.za/api/public/events/mr-write/main-calendar';
 
 // ----------------------------------------------------------
 // DOM READY
