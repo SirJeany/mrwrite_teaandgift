@@ -15,7 +15,7 @@
 // ----------------------------------------------------------
 // API ENDPOINTS
 // ----------------------------------------------------------
-const EVENTS_API_URL = 'https://events.mrwrite.co.za/api/public/events/mr-write/main-calendar';
+const EVENTS_API_URL = 'http://localhost:3000/api/public/events/mr-write/main-calendar';
 
 // ----------------------------------------------------------
 // DOM READY
@@ -342,6 +342,7 @@ function initDynamicEvents() {
           <h3 class="event-card-title">${evt.title}</h3>
           <p class="event-card-desc">${evt.description}</p>
           <span class="event-card-time"><i class="bi bi-clock"></i> ${evt.time}</span>
+          ${evt.calendarLink ? `<a href="${evt.calendarLink}" target="_blank" rel="noopener noreferrer" class="btn btn-calendar"><i class="bi bi-calendar-plus"></i> Add to Calendar</a>` : ''}
         </div>
       </div>`;
   }

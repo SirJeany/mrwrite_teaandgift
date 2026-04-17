@@ -654,6 +654,31 @@ img {
   border-radius: 50px;
 }
 
+.btn-calendar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--ff-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--clr-white);
+  background: var(--clr-ocean);
+  padding: 0.45rem 1.2rem;
+  border-radius: 50px;
+  border: none;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+
+.btn-calendar:hover {
+  background: var(--clr-secondary);
+  color: var(--clr-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(204, 104, 24, 0.3);
+}
+
 /* Carousel controls styling */
 .carousel-control-prev,
 .carousel-control-next {
