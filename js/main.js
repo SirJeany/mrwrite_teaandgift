@@ -13,6 +13,11 @@
 'use strict';
 
 // ----------------------------------------------------------
+// API ENDPOINTS
+// ----------------------------------------------------------
+const EVENTS_API_URL = 'https://events.mrwrite.co.za/api/public/events/mr-write/main-calendar';
+
+// ----------------------------------------------------------
 // DOM READY
 // ----------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
@@ -291,7 +296,7 @@ function setCurrentYear() {
 }
 
 // ----------------------------------------------------------
-// 7. DYNAMIC EVENTS — Load from data/events.json
+// 7. DYNAMIC EVENTS — Load from remote API
 // ----------------------------------------------------------
 function initDynamicEvents() {
   const carouselEl    = document.getElementById('eventsCarousel');
@@ -349,8 +354,8 @@ function initDynamicEvents() {
     if (errorEl)    errorEl.style.display = 'block';
   }
 
-  // Fetch and render
-  fetch('data/events.json')
+  // Fetch from the centralised What's On Calendar API
+  fetch(EVENTS_API_URL)
     .then(res => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return res.json();
