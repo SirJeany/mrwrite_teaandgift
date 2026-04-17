@@ -177,24 +177,22 @@
         <p class="section-subtitle">Live music, tea tastings, and quirky happenings — there's always something brewing.</p>
       </div>
 
-      <!-- Bootstrap Carousel — populated dynamically from data/events.json -->
-      <div id="eventsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-        <div class="carousel-indicators" id="eventsIndicators">
-          <!-- JS-generated -->
-        </div>
-        <div class="carousel-inner" id="eventsInner">
-          <!-- JS-generated -->
+      <!-- Peek Carousel — populated dynamically from events API -->
+      <div class="peek-carousel" id="eventsCarousel">
+        <div class="peek-track" id="eventsTrack">
+          <!-- JS-generated event cards -->
         </div>
 
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#eventsCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
+        <!-- Navigation -->
+        <button class="peek-nav peek-prev" id="eventsPrev" aria-label="Previous event">
+          <i class="bi bi-chevron-left"></i>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#eventsCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
+        <button class="peek-nav peek-next" id="eventsNext" aria-label="Next event">
+          <i class="bi bi-chevron-right"></i>
         </button>
+
+        <!-- Indicators -->
+        <div class="peek-indicators" id="eventsIndicators"></div>
       </div>
 
       <!-- Fallback message (hidden by default, shown on error) -->

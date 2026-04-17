@@ -296,103 +296,164 @@ function setCurrentYear() {
 }
 
 // ----------------------------------------------------------
-// 7. DYNAMIC EVENTS — Load from remote API
+// 7. DYNAMIC EVENTS — Peek carousel loaded from remote API
 // ----------------------------------------------------------
 function initDynamicEvents() {
   const carouselEl    = document.getElementById('eventsCarousel');
-  const innerEl       = document.getElementById('eventsInner');
+  const trackEl       = document.getElementById('eventsTrack');
   const indicatorsEl  = document.getElementById('eventsIndicators');
+  const prevBtn       = document.getElementById('eventsPrev');
+  const nextBtn       = document.getElementById('eventsNext');
   const errorEl       = document.getElementById('eventsError');
 
-  // Only run on pages that have the carousel
-  if (!innerEl || !indicatorsEl) return;
+  // Only run on pages that have the carousel track
+  if (!trackEl || !indicatorsEl) return;
 
-  /**
-   * Month abbreviations for formatting dates.
-   */
   const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN',
                   'JUL','AUG','SEP','OCT','NOV','DEC'];
 
-  /**
-   * Parse a YYYY-MM-DD string into a local-midnight Date.
-   */
+  /** Parse a YYYY-MM-DD string into a local-midnight Date. */
   function parseDate(dateStr) {
     const [y, m, d] = dateStr.split('-').map(Number);
     return new Date(y, m - 1, d);
   }
 
-  /**
-   * Build a single carousel-item's HTML.
-   */
-  function buildEventCard(evt, isActive) {
+  /** Build a single event card's inner HTML. */
+  function buildEventCard(evt) {
     const d       = parseDate(evt.date);
     const dayNum  = String(d.getDate()).padStart(2, '0');
     const month   = MONTHS[d.getMonth()];
     const dayName = evt.day || d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+    const iconClass = evt.icon || 'bi-calendar-event';
 
     return `
-      <div class="carousel-item${isActive ? ' active' : ''}">
-        <div class="event-card">
-          <div class="event-card-icon"><i class="bi ${evt.icon}"></i></div>
-          <div class="event-card-date">
-            <span class="event-day">${dayName}</span>
-            <span class="event-num">${dayNum}</span>
-            <span class="event-month">${month}</span>
-          </div>
-          <h3 class="event-card-title">${evt.title}</h3>
-          <p class="event-card-desc">${evt.description}</p>
-          <span class="event-card-time"><i class="bi bi-clock"></i> ${evt.time}</span>
-          ${evt.calendarLink ? `<a href="${evt.calendarLink}" target="_blank" rel="noopener noreferrer" class="btn btn-calendar"><i class="bi bi-calendar-plus"></i> Add to Calendar</a>` : ''}
+      <div class="event-card">
+        <div class="event-card-icon"><i class="bi ${iconClass}"></i></div>
+        <div class="event-card-date">
+          <span class="event-day">${dayName}</span>
+          <span class="event-num">${dayNum}</span>
+          <span class="event-month">${month}</span>
         </div>
+        <h3 class="event-card-title">${evt.title}</h3>
+        <p class="event-card-desc">${evt.description}</p>
+        <span class="event-card-time"><i class="bi bi-clock"></i> ${evt.time}</span>
+        ${evt.calendarLink ? `<a href="${evt.calendarLink}" target="_blank" rel="noopener noreferrer" class="btn btn-calendar"><i class="bi bi-calendar-plus"></i> Add to Calendar</a>` : ''}
       </div>`;
   }
 
-  /**
-   * Show the error fallback and hide the carousel.
-   */
+  /** Show the error fallback and hide the carousel. */
   function showError() {
     if (carouselEl) carouselEl.style.display = 'none';
     if (errorEl)    errorEl.style.display = 'block';
   }
 
-  // Fetch from the centralised What's On Calendar API
+  // ------- Peek carousel state & logic -------
+  let events = [];
+  let currentIndex = 0;
+  let autoplayTimer = null;
+
+  /** Assigns peek-left / peek-active / peek-right / peek-hidden classes. */
+  function updatePositions() {
+    const cards = trackEl.querySelectorAll('.peek-card');
+    const total = cards.length;
+    if (total === 0) return;
+
+    cards.forEach((card, i) => {
+      card.classList.remove('peek-left', 'peek-active', 'peek-right', 'peek-hidden');
+
+      if (i === currentIndex) {
+        card.classList.add('peek-active');
+      } else if (i === (currentIndex - 1 + total) % total) {
+        card.classList.add('peek-left');
+      } else if (i === (currentIndex + 1) % total) {
+        card.classList.add('peek-right');
+      } else {
+        card.classList.add('peek-hidden');
+      }
+    });
+
+    // Update indicator dots
+    const dots = indicatorsEl.querySelectorAll('.peek-dot');
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentIndex);
+    });
+  }
+
+  function goTo(index) {
+    const total = events.length;
+    currentIndex = ((index % total) + total) % total;
+    updatePositions();
+    resetAutoplay();
+  }
+
+  function goNext() { goTo(currentIndex + 1); }
+  function goPrev() { goTo(currentIndex - 1); }
+
+  function resetAutoplay() {
+    clearInterval(autoplayTimer);
+    autoplayTimer = setInterval(goNext, 5000);
+  }
+
+  // ------- Fetch & render -------
   fetch(EVENTS_API_URL)
     .then(res => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return res.json();
     })
-    .then(events => {
-      // Filter: only today or future events
+    .then(data => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      const upcoming = events.filter(evt => parseDate(evt.date) >= today);
+      const upcoming = data.filter(evt => parseDate(evt.date) >= today);
 
       if (upcoming.length === 0) {
         showError();
         return;
       }
 
-      // Sort by date ascending
       upcoming.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+      events = upcoming;
 
-      // Build carousel items
-      innerEl.innerHTML = upcoming
-        .map((evt, i) => buildEventCard(evt, i === 0))
+      // Build peek cards
+      trackEl.innerHTML = upcoming
+        .map((evt, i) => {
+          const posClass = i === 0 ? 'peek-active'
+            : i === upcoming.length - 1 && upcoming.length > 2 ? 'peek-left'
+            : i === 1 ? 'peek-right'
+            : 'peek-hidden';
+          return `<div class="peek-card ${posClass}">${buildEventCard(evt)}</div>`;
+        })
         .join('');
 
-      // Build indicators
+      // Build indicator dots
       indicatorsEl.innerHTML = upcoming
         .map((_, i) =>
-          `<button type="button" data-bs-target="#eventsCarousel" data-bs-slide-to="${i}"` +
-          `${i === 0 ? ' class="active" aria-current="true"' : ''}` +
-          ` aria-label="Event ${i + 1}"></button>`
+          `<button class="peek-dot${i === 0 ? ' active' : ''}" aria-label="Event ${i + 1}"></button>`
         )
         .join('');
 
-      // Re-initialise the Bootstrap carousel so it picks up the new items
-      if (carouselEl && typeof bootstrap !== 'undefined') {
-        new bootstrap.Carousel(carouselEl);
+      // Attach dot click handlers
+      indicatorsEl.querySelectorAll('.peek-dot').forEach((dot, i) => {
+        dot.addEventListener('click', () => goTo(i));
+      });
+
+      // Nav buttons
+      if (prevBtn) prevBtn.addEventListener('click', goPrev);
+      if (nextBtn) nextBtn.addEventListener('click', goNext);
+
+      // Hide nav if only 1 event
+      if (upcoming.length <= 1) {
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+      }
+
+      // Start autoplay
+      resetAutoplay();
+
+      // Pause autoplay on hover
+      if (carouselEl) {
+        carouselEl.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
+        carouselEl.addEventListener('mouseleave', resetAutoplay);
       }
     })
     .catch(() => showError());

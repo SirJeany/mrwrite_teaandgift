@@ -680,46 +680,147 @@ img {
 }
 
 /* Carousel controls styling */
-.carousel-control-prev,
-.carousel-control-next {
-  width: 48px;
-  height: 48px;
-  background: var(--clr-ocean);
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0.9;
-  cursor: pointer;
-  transition: all var(--transition);
+
+/* ----------------------------------------------------------
+   PEEK CAROUSEL — 3-card view with active card centred
+   ---------------------------------------------------------- */
+.peek-carousel {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 60px;
 }
 
-.carousel-control-prev:hover,
-.carousel-control-next:hover {
+.peek-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  position: relative;
+  min-height: 380px;
+}
+
+/* Individual event card in the peek track */
+.peek-card {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 480px;
+  position: absolute;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* Centre / active card */
+.peek-card.peek-active {
+  position: relative;
+  z-index: 3;
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Previous card — peeking from the left */
+.peek-card.peek-left {
+  z-index: 1;
+  transform: translateX(-75%) scale(0.82);
+  opacity: 0.45;
+  filter: blur(1px);
+}
+
+/* Next card — peeking from the right */
+.peek-card.peek-right {
+  z-index: 1;
+  transform: translateX(75%) scale(0.82);
+  opacity: 0.45;
+  filter: blur(1px);
+}
+
+/* Cards further away — hidden */
+.peek-card.peek-hidden {
+  z-index: 0;
+  transform: scale(0.7);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Event card inner styling stays the same */
+.event-card {
+  transition: all 0.5s ease;
+}
+
+/* Navigation arrows */
+.peek-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: var(--clr-ocean);
+  border: none;
+  border-radius: 50%;
+  color: var(--clr-white);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  z-index: 5;
+  opacity: 0.9;
+}
+
+.peek-nav:hover {
   opacity: 1;
   background: var(--clr-secondary);
 }
 
-.carousel-control-prev { left: -10px; }
-.carousel-control-next { right: -10px; }
+.peek-prev { left: 0; }
+.peek-next { right: 0; }
 
-.carousel-indicators {
-  bottom: -40px;
+/* Indicators */
+.peek-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
 }
 
-.carousel-indicators button {
+.peek-dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--clr-sky);
+  background: rgba(204, 104, 24, 0.3);
   border: none;
   cursor: pointer;
   transition: all var(--transition);
+  padding: 0;
 }
 
-.carousel-indicators button.active {
+.peek-dot.active {
   background: var(--clr-secondary);
   width: 32px;
   border-radius: 6px;
+}
+
+/* Mobile: stack single card, no peek */
+@media (max-width: 768px) {
+  .peek-carousel {
+    padding: 0 1rem;
+  }
+
+  .peek-card.peek-left,
+  .peek-card.peek-right {
+    display: none;
+  }
+
+  .peek-nav {
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  .peek-prev { left: -0.25rem; }
+  .peek-next { right: -0.25rem; }
 }
 
 /* ----------------------------------------------------------
@@ -1319,17 +1420,6 @@ img {
 
   .hero-headline {
     font-size: 2.2rem;
-  }
-
-  .carousel-control-prev,
-  .carousel-control-next {
-    position: relative;
-    display: inline-flex;
-    margin: 1rem 0.5rem 0;
-    left: auto;
-    right: auto;
-    top: auto;
-    transform: none;
   }
 
   .about-image-stack {
