@@ -666,7 +666,6 @@ img {
   padding: 0.45rem 1.2rem;
   border-radius: 50px;
   border: none;
-  margin-top: 1rem;
   cursor: pointer;
   transition: all var(--transition);
   text-decoration: none;
@@ -806,6 +805,10 @@ img {
 @media (max-width: 768px) {
   .peek-carousel {
     padding: 0 1rem;
+  }
+
+  .btn-calendar {
+    margin-top: 1rem;
   }
 
   .peek-card.peek-left,
