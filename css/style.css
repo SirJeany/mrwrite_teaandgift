@@ -1461,31 +1461,29 @@ img {
 /* ----------------------------------------------------------
    CTA SECTION — styling to match site hierarchy and zebra pattern
    ---------------------------------------------------------- */
-.cta-section {
+.booking-section {
   background: var(--clr-bg-alt);
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
 
-.cta-section .section-overline {
+.booking-section .section-overline {
   color: var(--clr-secondary);
 }
 
-.cta-section .section-heading {
+.booking-section .section-heading {
   color: var(--clr-text);
   margin-bottom: 0.5rem;
 }
 
-.cta-section .section-subtitle {
+.booking-section .section-subtitle {
   color: var(--clr-text-muted);
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Use the existing btn-calendar styling for CTA button (ocean-blue pill)
-   Add a subtle hover-lift to match the site personality */
-.btn-calendar {
+.btn-booking {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -1502,12 +1500,14 @@ img {
   text-decoration: none;
 }
 
-.btn-calendar:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(49,88,165,0.16);
+.btn-booking:hover {
+  background: var(--clr-secondary);
+  color: var(--clr-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(204, 104, 24, 0.3);
 }
 
-.btn-calendar:active {
+.btn-booking:active {
   transform: translateY(-2px) scale(0.995);
   box-shadow: 0 6px 18px rgba(49,88,165,0.12);
 }
