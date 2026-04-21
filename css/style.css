@@ -1457,3 +1457,21 @@ img {
     height: 140px;
   }
 }
+
+/* ----------------------------------------------------------
+   CTA BUTTON — hover lift for tactile feel
+   ---------------------------------------------------------- */
+.btn-cta {
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn-cta:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(49,88,165,0.16);
+}
+
+.btn-cta:active {
+  transform: translateY(-2px) scale(0.995);
+  box-shadow: 0 6px 18px rgba(49,88,165,0.12);
+}
