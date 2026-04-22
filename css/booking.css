@@ -234,6 +234,19 @@
 
 .booking-input.is-invalid {
   border-color: var(--clr-red);
+  box-shadow: 0 4px 12px rgba(234, 28, 41, 0.08);
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.booking-input.shake {
+  animation: shake 360ms ease;
 }
 
 .booking-disclaimer {

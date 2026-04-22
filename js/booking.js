@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDatePicker();
   initTimeSlots();
   initBrewProgress();
+  initGuestCountValidation()
   initSubmitButtons();
   initWhatsApp();
   initEmailModal();
@@ -201,6 +202,39 @@ function updateBrewProgress() {
       cup.classList.remove('filled');
     }
   });
+}
+
+function initGuestCountValidation() {
+  const guestInput = document.getElementById('guestCount');
+    if (!guestInput) return;
+
+    // Ensure the feedback element has an id for ARIA
+    const fb = guestInput.nextElementSibling; // assumes the invalid-feedback div follows the input
+    if (fb && !fb.id) fb.id = 'guestCountFeedback';
+
+    guestInput.setAttribute('aria-describedby', fb?.id || '');
+    guestInput.addEventListener('input', validateGuestCountRealtime);
+    guestInput.addEventListener('blur', validateGuestCountRealtime);
+
+    function validateGuestCountRealtime() {
+      const val = parseInt(guestInput.value, 10);
+      const isValid = !isNaN(val) && val >= 1 && val <= 12;
+
+      if (!isValid) {
+        guestInput.classList.add('is-invalid');
+        guestInput.classList.remove('is-valid');
+        guestInput.setAttribute('aria-invalid', 'true');
+        if (fb) fb.classList.add('d-block');
+      } else {
+        guestInput.classList.remove('is-invalid');
+        guestInput.classList.add('is-valid');
+        guestInput.setAttribute('aria-invalid', 'false');
+        if (fb) fb.classList.remove('d-block');
+      }
+
+      // Re-run the form-completion check so submit buttons enable/disable correctly
+      if (typeof checkFormValidity === 'function') checkFormValidity();
+    }
 }
 
 function countFilledFields() {
