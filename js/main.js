@@ -237,7 +237,7 @@ function initTeaOMeter() {
 function initScrollAnimations() {
   // Add fade-in class to all sections except hero
   const sections = document.querySelectorAll(
-    '.section-about, .section-events, .section-teaometer, .section-gallery, .section-contact'
+    '.section-about, .section-events, .section-teaometer, .section-gallery, .section-contact, .section-booking'
   );
 
   sections.forEach(section => {

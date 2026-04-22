@@ -36,6 +36,11 @@
   --transition: 0.3s ease;
 }
 
+/* This highlights EVERY box on the page */
+/* * {
+    outline: 1px solid red !important;
+} */
+
 /* ----------------------------------------------------------
    RESET & BASE
    ---------------------------------------------------------- */
@@ -133,9 +138,9 @@ img {
    NAVBAR
    ---------------------------------------------------------- */
 .navbar {
-  padding: 1rem 0;
   transition: all var(--transition);
   background: transparent;
+  /* background: rgba(255, 253, 245, 0.95); */
 }
 
 .navbar.scrolled {
@@ -193,17 +198,13 @@ img {
 }
 
 .navbar-toggler {
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  /* border: 2px solid rgba(255, 255, 255, 0.5); */
   padding: 0.4rem 0.6rem;
   cursor: pointer;
 }
 
-.navbar.scrolled .navbar-toggler {
-  border-color: var(--clr-secondary);
-}
-
 .navbar-toggler-icon {
-  filter: brightness(0) invert(1);
+  /* filter: brightness(0) invert(1); */
 }
 
 .navbar.scrolled .navbar-toggler-icon {
@@ -393,7 +394,7 @@ img {
 
 .teacup-handle {
   position: absolute;
-  right: -28px;
+  right: 6px;
   top: 18px;
   width: 36px;
   height: 50px;
@@ -827,11 +828,60 @@ img {
 }
 
 /* ----------------------------------------------------------
+   BOOKING SECTION
+   ---------------------------------------------------------- */
+.section-booking {
+  padding: 6rem 0;
+  background: var(--clr-bg);
+}
+
+.section-booking .section-overline {
+  color: var(--clr-secondary);
+}
+
+.section-booking .section-heading {
+  color: var(--clr-text);
+  margin-bottom: 0.5rem;
+}
+
+.section-booking .section-subtitle {
+  color: var(--clr-text-muted);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-booking {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--ff-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--clr-white);
+  background: var(--clr-ocean);
+  padding: 0.8rem 1.6rem;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration: none;
+}
+
+.btn-booking:hover {
+  background: var(--clr-secondary);
+  color: var(--clr-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(204, 104, 24, 0.3);
+}
+
+
+/* ----------------------------------------------------------
    TEA-O-METER SECTION
    ---------------------------------------------------------- */
 .section-teaometer {
   padding: 6rem 0;
-  background: var(--clr-bg);
+  background: var(--clr-bg-alt);
 }
 
 .teaometer-widget {
@@ -969,7 +1019,7 @@ img {
    ---------------------------------------------------------- */
 .section-gallery {
   padding: 6rem 0;
-  background: var(--clr-bg-alt);
+  background: var(--clr-bg);
 }
 
 /* Scrapbook card — thick border, shadow, slight random tilt */
@@ -1200,7 +1250,7 @@ img {
    ---------------------------------------------------------- */
 .section-contact {
   padding: 6rem 0;
-  background: var(--clr-bg);
+  background: var(--clr-bg-alt);
 }
 
 .contact-details {
@@ -1404,11 +1454,12 @@ img {
    RESPONSIVE OVERRIDES
    ---------------------------------------------------------- */
 @media (max-width: 991px) {
-  .navbar-collapse {
-    background: rgba(255, 253, 245, 0.98);
+  .navbar {
+    background: rgba(255, 253, 245, 0.95);
+  }
+
+  .navbar.scrolled {
     border-radius: var(--radius);
-    padding: 1rem;
-    margin-top: 0.5rem;
     box-shadow: var(--shadow-lifted);
   }
 
