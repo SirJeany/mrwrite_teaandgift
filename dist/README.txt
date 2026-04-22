@@ -1,0 +1,1 @@
+Dist package contains minified assets and optimized images for deployment. Place this folder on the Plesk web root.
