@@ -1457,3 +1457,57 @@ img {
     height: 140px;
   }
 }
+
+/* ----------------------------------------------------------
+   CTA SECTION — styling to match site hierarchy and zebra pattern
+   ---------------------------------------------------------- */
+.booking-section {
+  background: var(--clr-bg-alt);
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.booking-section .section-overline {
+  color: var(--clr-secondary);
+}
+
+.booking-section .section-heading {
+  color: var(--clr-text);
+  margin-bottom: 0.5rem;
+}
+
+.booking-section .section-subtitle {
+  color: var(--clr-text-muted);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-booking {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--ff-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--clr-white);
+  background: var(--clr-ocean);
+  padding: 0.8rem 1.6rem;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration: none;
+}
+
+.btn-booking:hover {
+  background: var(--clr-secondary);
+  color: var(--clr-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(204, 104, 24, 0.3);
+}
+
+.btn-booking:active {
+  transform: translateY(-2px) scale(0.995);
+  box-shadow: 0 6px 18px rgba(49,88,165,0.12);
+}

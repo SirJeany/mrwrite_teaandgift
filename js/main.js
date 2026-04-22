@@ -326,6 +326,22 @@ function initDynamicEvents() {
     const dayName = evt.day || d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
     const iconClass = evt.icon || 'bi-calendar-event';
 
+    // If the API provided a calendarLink, ensure the description is passed through.
+    let calendarHref = evt.calendarLink || '';
+    if (calendarHref && evt.description) {
+      try {
+        const url = new URL(calendarHref);
+        // Common param names for event description/details
+        if (!url.searchParams.has('details') && !url.searchParams.has('description') && !url.searchParams.has('text')) {
+          url.searchParams.append('details', evt.description);
+        }
+        calendarHref = url.toString();
+      } catch (e) {
+        // If URL parsing fails, append a details param safely
+        calendarHref = `${calendarHref}${calendarHref.includes('?') ? '&' : '?'}details=${encodeURIComponent(evt.description)}`;
+      }
+    }
+
     return `
       <div class="event-card">
         <div class="event-card-icon"><i class="bi ${iconClass}"></i></div>
@@ -337,7 +353,7 @@ function initDynamicEvents() {
         <h3 class="event-card-title">${evt.title}</h3>
         <p class="event-card-desc">${evt.description}</p>
         <span class="event-card-time"><i class="bi bi-clock"></i> ${evt.time}</span>
-        ${evt.calendarLink ? `<a href="${evt.calendarLink}" target="_blank" rel="noopener noreferrer" class="btn btn-calendar"><i class="bi bi-calendar-plus"></i> Add to Calendar</a>` : ''}
+        ${calendarHref ? `<a href="${calendarHref}" target="_blank" rel="noopener noreferrer" class="btn btn-calendar"><i class="bi bi-calendar-plus"></i> Add to Calendar</a>` : ''}
       </div>`;
   }
 
