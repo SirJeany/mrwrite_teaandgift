@@ -265,6 +265,14 @@ function isFormComplete() {
   const date = document.getElementById('bookingDate');
   if (!date || !date.value) return false;
 
+  // enforce two-day rule in JS
+ const min = date.getAttribute('min');
+ if (min) {
+   const chosen = new Date(date.value + 'T00:00:00');
+   const minDate = new Date(min + 'T00:00:00');
+   if (chosen < minDate) return false;
+ }
+
   const time = document.getElementById('bookingTime');
   if (!time || !time.value) return false;
 
