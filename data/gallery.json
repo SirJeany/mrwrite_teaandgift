@@ -19,8 +19,23 @@
         },
         {
           "src": "images/gallery/shop/blue-yellow-shop.jpeg",
-          "alt": "Fresh vibes1",
+          "alt": "Fresh vibes!",
           "caption": "Couch 🌻 comfort 🫐"
+        },
+        {
+          "src": "images/gallery/shop/funky-cat.jpeg",
+          "alt": "Funky Cat",
+          "caption": "😼"
+        },
+        {
+          "src": "images/gallery/shop/herbs-through-the-porta.jpeg",
+          "alt": "Coffee Herbs",
+          "caption": "Leaves through the porta 🌿"
+        },
+        {
+          "src": "images/gallery/shop/youre-a-star.jpeg",
+          "alt": "You're a star",
+          "caption": "You're a ⭐"
         }
       ]
     },
