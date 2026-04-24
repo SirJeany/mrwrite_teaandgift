@@ -15,7 +15,7 @@
 // ----------------------------------------------------------
 // API ENDPOINTS
 // ----------------------------------------------------------
-const EVENTS_API_URL = 'http://localhost:3000/api/public/events/mr-write/main-calendar';
+const EVENTS_API_URL = 'https://events.mrwrite.co.za/api/public/events/mr-write/main-calendar';
 
 // ----------------------------------------------------------
 // DOM READY
@@ -633,40 +633,67 @@ function buildCategoryCard(cat, idx) {
  * Loads a random thumbnail image from each category.
  * Falls back to the placeholder icon if the image fails to load.
  */
-function loadThumbnails(categories) {
-  categories.forEach(cat => {
-    if (!cat.images || cat.images.length === 0) return;
-
-    // Pick a random image from the category
-    const randomImg = cat.images[Math.floor(Math.random() * cat.images.length)];
-    const thumbEl = document.getElementById(`thumb-${cat.id}`);
-    if (!thumbEl) return;
-
-    // Create an img element and test if it loads
-    const img = new Image();
-    img.onload = () => {
-      // Replace the placeholder icon with the real image
-      thumbEl.innerHTML = '';
-      const imgEl = document.createElement('img');
-      imgEl.src = randomImg.src;
-      imgEl.alt = randomImg.alt;
-      imgEl.loading = 'lazy';
-      thumbEl.appendChild(imgEl);
-
-      // Re-add badges if needed
-      const card = thumbEl.closest('.gallery-card');
-      if (card?.dataset.externalLink) {
-        thumbEl.insertAdjacentHTML('beforeend', 
-          '<span class="gallery-link-badge"><i class="bi bi-box-arrow-up-right"></i> Visit</span>');
-      }
-      if (cat.images.length > 1) {
-        thumbEl.insertAdjacentHTML('beforeend', 
-          `<span class="gallery-count-badge"><i class="bi bi-images"></i> ${cat.images.length}</span>`);
+async function loadThumbnails(categories) {
+  // Helper: given a src, test if it loads; otherwise try dist/images/<basename>
+  const resolveImageUrl = (src) => new Promise(resolve => {
+    if (!src) return resolve(src);
+    const test = new Image();
+    test.onload = () => resolve(src);
+    test.onerror = () => {
+      // Try the dist/images folder with same basename
+      try {
+        const parts = src.split('/');
+        const basename = parts[parts.length - 1];
+        const fallback = `dist/images/${basename}`;
+        const test2 = new Image();
+        test2.onload = () => resolve(fallback);
+        test2.onerror = () => resolve(src); // give up, return original
+        test2.src = fallback;
+      } catch (e) {
+        resolve(src);
       }
     };
-    // If image fails, just keep the placeholder icon
-    img.src = randomImg.src;
+    test.src = src;
   });
+
+  // Resolve all category images (mutate cat.images[*].src to working URL)
+  for (const cat of categories) {
+    if (!cat.images || cat.images.length === 0) continue;
+
+    // Resolve each image src in the category
+    for (let i = 0; i < cat.images.length; i++) {
+      try {
+        const resolved = await resolveImageUrl(cat.images[i].src);
+        cat.images[i].src = resolved || cat.images[i].src;
+      } catch (e) {
+        // ignore and keep original
+      }
+    }
+
+    // Now pick a random (resolved) image for the thumbnail
+    const randomImg = cat.images[Math.floor(Math.random() * cat.images.length)];
+    const thumbEl = document.getElementById(`thumb-${cat.id}`);
+    if (!thumbEl) continue;
+
+    // Replace the placeholder icon with the resolved image
+    const imgEl = document.createElement('img');
+    imgEl.src = randomImg.src;
+    imgEl.alt = randomImg.alt || '';
+    imgEl.loading = 'lazy';
+    thumbEl.innerHTML = '';
+    thumbEl.appendChild(imgEl);
+
+    // Re-add badges if needed
+    const card = thumbEl.closest('.gallery-card');
+    if (card?.dataset.externalLink) {
+      thumbEl.insertAdjacentHTML('beforeend', 
+        '<span class="gallery-link-badge"><i class="bi bi-box-arrow-up-right"></i> Visit</span>');
+    }
+    if (cat.images.length > 1) {
+      thumbEl.insertAdjacentHTML('beforeend', 
+        `<span class="gallery-count-badge"><i class="bi bi-images"></i> ${cat.images.length}</span>`);
+    }
+  }
 }
 
 /**
