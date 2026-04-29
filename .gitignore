@@ -1,6 +1,3 @@
 .DS_Store
 *.docx
 *.~lock*
-
-# Unoptimised source images — optimised copies live in dist/images/
-/images/

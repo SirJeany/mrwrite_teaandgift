@@ -4,10 +4,9 @@
   "description": "Mr. Write Tea & Gift Shop — Hermanus static website",
   "private": true,
   "scripts": {
-    "build":       "node scripts/build.js",
-    "build:images":"node scripts/build.js --only=images",
-    "build:css":   "node scripts/build.js --only=css",
-    "build:js":    "node scripts/build.js --only=js"
+    "build":     "node scripts/build.js",
+    "build:css": "node scripts/build.js --only=css",
+    "build:js":  "node scripts/build.js --only=js"
   },
   "engines": {
     "node": ">=18"
