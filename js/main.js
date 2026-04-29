@@ -633,67 +633,39 @@ function buildCategoryCard(cat, idx) {
  * Loads a random thumbnail image from each category.
  * Falls back to the placeholder icon if the image fails to load.
  */
-async function loadThumbnails(categories) {
-  // Helper: given a src, test if it loads; otherwise try dist/images/<basename>
-  const resolveImageUrl = (src) => new Promise(resolve => {
-    if (!src) return resolve(src);
-    const test = new Image();
-    test.onload = () => resolve(src);
-    test.onerror = () => {
-      // Try the dist/images folder with same basename
-      try {
-        const parts = src.split('/');
-        const basename = parts[parts.length - 1];
-        const fallback = `dist/images/${basename}`;
-        const test2 = new Image();
-        test2.onload = () => resolve(fallback);
-        test2.onerror = () => resolve(src); // give up, return original
-        test2.src = fallback;
-      } catch (e) {
-        resolve(src);
-      }
-    };
-    test.src = src;
-  });
+function loadThumbnails(categories) {
+  categories.forEach(cat => {
+    if (!cat.images || cat.images.length === 0) return;
 
-  // Resolve all category images (mutate cat.images[*].src to working URL)
-  for (const cat of categories) {
-    if (!cat.images || cat.images.length === 0) continue;
-
-    // Resolve each image src in the category
-    for (let i = 0; i < cat.images.length; i++) {
-      try {
-        const resolved = await resolveImageUrl(cat.images[i].src);
-        cat.images[i].src = resolved || cat.images[i].src;
-      } catch (e) {
-        // ignore and keep original
-      }
-    }
-
-    // Now pick a random (resolved) image for the thumbnail
+    // Pick a random image from the category for the thumbnail
     const randomImg = cat.images[Math.floor(Math.random() * cat.images.length)];
     const thumbEl = document.getElementById(`thumb-${cat.id}`);
-    if (!thumbEl) continue;
+    if (!thumbEl) return;
 
-    // Replace the placeholder icon with the resolved image
-    const imgEl = document.createElement('img');
-    imgEl.src = randomImg.src;
-    imgEl.alt = randomImg.alt || '';
-    imgEl.loading = 'lazy';
-    thumbEl.innerHTML = '';
-    thumbEl.appendChild(imgEl);
+    const img = new Image();
+    img.onload = () => {
+      // Image loaded — replace placeholder icon with the real image
+      const imgEl = document.createElement('img');
+      imgEl.src = randomImg.src;
+      imgEl.alt = randomImg.alt || '';
+      imgEl.loading = 'lazy';
+      thumbEl.innerHTML = '';
+      thumbEl.appendChild(imgEl);
 
-    // Re-add badges if needed
-    const card = thumbEl.closest('.gallery-card');
-    if (card?.dataset.externalLink) {
-      thumbEl.insertAdjacentHTML('beforeend', 
-        '<span class="gallery-link-badge"><i class="bi bi-box-arrow-up-right"></i> Visit</span>');
-    }
-    if (cat.images.length > 1) {
-      thumbEl.insertAdjacentHTML('beforeend', 
-        `<span class="gallery-count-badge"><i class="bi bi-images"></i> ${cat.images.length}</span>`);
-    }
-  }
+      // Re-add badges
+      const card = thumbEl.closest('.gallery-card');
+      if (card?.dataset.externalLink) {
+        thumbEl.insertAdjacentHTML('beforeend',
+          '<span class="gallery-link-badge"><i class="bi bi-box-arrow-up-right"></i> Visit</span>');
+      }
+      if (cat.images.length > 1) {
+        thumbEl.insertAdjacentHTML('beforeend',
+          `<span class="gallery-count-badge"><i class="bi bi-images"></i> ${cat.images.length}</span>`);
+      }
+    };
+    // If image fails to load, placeholder icon stays — no fallback needed
+    img.src = randomImg.src;
+  });
 }
 
 /**
