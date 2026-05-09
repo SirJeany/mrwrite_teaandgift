@@ -48,6 +48,7 @@
           <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
           <li class="nav-item"><a class="nav-link" href="#events">What's On</a></li>
           <li class="nav-item"><a class="nav-link" href="booking.html">Book High Tea</a></li>
+          <li class="nav-item"><a class="nav-link" href="#menu">The Menu</a></li>
           <li class="nav-item"><a class="nav-link" href="#tea-o-meter">Tea-O-Meter</a></li>
           <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
@@ -72,11 +73,12 @@
         <div class="col-lg-7 hero-text">
           <p class="hero-tagline m-3">Hermanus's Quirkiest Teahouse</p>
           <h1 class="hero-headline m-3">
-            Where Every Cup <br/>Tells a <span class="highlight">Story</span>
+            You’ve found<span class="highlight">Mr. Write</span>’s<br>
+            Tea and Gift Café
           </h1>
           <p class="hero-sub m-3">
-            Loose-leaf teas, handmade gifts, ocean views, and good vibes — 
-            brewed daily on the Whale Coast.
+            Book a high tea, drop in for something warm, or join us for an event. 
+            It’s easygoing, a little unexpected, and built for lingering.
           </p>
           <div class="hero-cta">
             <a href="booking.html" class="btn btn-primary btn-lg me-3 m-3">Book a High Tea</a>
@@ -134,22 +136,34 @@
           </div>
         </div>
         <div class="col-lg-6">
-          <h6 class="section-overline">Our Story</h6>
-          <h2 class="section-heading">A little shop with a <span class="highlight">big heart</span></h2>
+          <h6 class="section-overline">The spacefaring maltese pup</h6>
+          <h2 class="section-heading">A little shop with a <span class="highlight">story</span></h2>
           <p class="section-body">
-            Tucked away in the heart of Hermanus, Mr. Write Tea & Gift Shop is where 
-            mismatched teacups meet hand-picked loose-leaf blends, and every shelf has 
-            a surprise waiting. We're not your average tea shop — we're part coastal 
-            hideaway, part curiosity cabinet, and 100% feel-good.
+            In 2024, we started as a small gift shop tucked behind an art gallery. 
+            Today, Mr. Write is a café filled with second-hand books, coffee, 
+            proper tea, and sandwiches worth the wait.
           </p>
           <p class="section-body">
-            Whether you're popping in for a perfect cuppa after a cliff-path walk, 
-            hunting for a one-of-a-kind gift, or settling in for an afternoon of 
-            live music and cake — you're home. Pull up a chair. The kettle's on.
+            Our story is guided by our mascot: a Maltese poodle who journeyed into space to find "Mr. Right." 
+            But after orbiting the stars, they noticed something: the cosmos is very big and very cold, 
+            and it notably lacks a good cup of tea.
           </p>
+          <p class="section-body">
+            They realised that "Mr. Right" isn’t always a soulmate waiting to be found; 
+            it is the warmth of a room, the weight of a book, and the feeling of finally being home.
+          </p>
+          <p class="section-body">
+            They traded the cosmos for this colourful, dimly lit corner that feels like the living room of a childhood home. 
+            We’ve kept it that way: a slightly random and very intentional place for community.
+          </p>
+          <p class="section-body">
+            Join us and sit quietly with a book/laptop or loudly with friends! 
+            We hope you leave with that fuzzy feeling of having arrived exactly where you belong.
+          </p>
+
           <div class="about-stats">
             <div class="stat-item">
-              <span class="stat-number">50+</span>
+              <span class="stat-number">30+</span>
               <span class="stat-label">Tea Varieties</span>
             </div>
             <div class="stat-item">
@@ -211,6 +225,102 @@
       <h2 class="section-heading">Reserve Your <span class="highlight">High Tea</span> Experience</h2>
       <p class="section-subtitle mb-4">Gather friends, celebrate small moments, or treat yourself — our high tea is best enjoyed with company. Choose a date, pick a package, and we'll have everything ready.</p>
       <a href="booking.html" class="btn btn-booking" role="button">Reserve a Table</a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       THE MENU — Food & Drink carousel + Tea List PDF viewer
+       ============================================================ -->
+  <section id="menu" class="section-menu">
+    <div class="container">
+
+      <div class="text-center mb-4">
+        <h6 class="section-overline">What's Cooking</h6>
+        <h2 class="section-heading">Our <span class="highlight">Menu</span></h2>
+        <p class="section-subtitle">From the kitchen to the teapot — everything we brew, bake, and serve.</p>
+      </div>
+
+      <!-- Tab toggle -->
+      <div class="menu-tabs" role="tablist" aria-label="Menu sections">
+        <button class="menu-tab active"
+                id="tabFoodDrink"
+                role="tab"
+                aria-selected="true"
+                aria-controls="panelFoodDrink"
+                data-target="panelFoodDrink">
+          <i class="bi bi-egg-fried"></i> Food &amp; Drink
+        </button>
+        <button class="menu-tab"
+                id="tabTeaList"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panelTeaList"
+                data-target="panelTeaList">
+          <i class="bi bi-cup-hot-fill"></i> The Tea List
+        </button>
+      </div>
+
+      <!-- ===== Panel A: Food & Drink carousel ===== -->
+      <div class="menu-panel active is-visible"
+           id="panelFoodDrink"
+           role="tabpanel"
+           aria-labelledby="tabFoodDrink">
+        <div class="menu-carousel">
+          <div class="menu-carousel-track" id="menuCarouselTrack"></div>
+
+          <button class="menu-carousel-nav menu-carousel-prev" id="menuPrev" aria-label="Previous page">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <button class="menu-carousel-nav menu-carousel-next" id="menuNext" aria-label="Next page">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+
+          <div class="menu-carousel-dots" id="menuDots"></div>
+        </div>
+      </div>
+
+      <!-- ===== Panel B: Tea List PDF ===== -->
+      <div class="menu-panel"
+           id="panelTeaList"
+           role="tabpanel"
+           aria-labelledby="tabTeaList">
+
+        <!-- Desktop: embedded PDF -->
+        <div class="pdf-desktop">
+          <div class="pdf-frame-wrapper">
+            <iframe
+              class="pdf-iframe"
+              src="images/menu/TEA_MENU.pdf#toolbar=1&navpanes=0&scrollbar=0&view=FitH"
+              title="Mr. Write Tea Menu"
+              loading="lazy">
+            </iframe>
+          </div>
+          <div class="text-center mt-3">
+            <a href="images/menu/TEA_MENU.pdf"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="btn btn-fullscreen">
+              <i class="bi bi-arrows-fullscreen"></i> View Fullscreen
+            </a>
+          </div>
+        </div>
+
+        <!-- Mobile: no scroll-trap — open PDF directly -->
+        <div class="pdf-mobile">
+          <div class="pdf-mobile-card">
+            <i class="bi bi-file-earmark-pdf-fill"></i>
+            <h4>The Tea List</h4>
+            <p>Best viewed on a bigger screen, or tap below to open the full PDF.</p>
+            <a href="images/menu/TEA_MENU.pdf"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="btn btn-calendar">
+              <i class="bi bi-box-arrow-up-right"></i> Open Tea Menu
+            </a>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 

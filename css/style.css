@@ -877,11 +877,278 @@ img {
 
 
 /* ----------------------------------------------------------
+   MENU SECTION
+   ---------------------------------------------------------- */
+.section-menu {
+  padding: 6rem 0;
+  /* Slightly lighter than bg-alt so it reads distinct from Tea-O-Meter below */
+  background: var(--clr-bg-alt);
+  /* Subtle horizontal rule top — mirrors the events section stripe */
+  border-top: 4px solid transparent;
+}
+
+/* ------ Tab toggle ------ */
+.menu-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  background: var(--clr-bg-alt);
+  border-radius: 50px;
+  padding: 0.35rem;
+  width: fit-content;
+  margin: 0 auto 2.5rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.menu-tab {
+  font-family: var(--ff-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.6rem 1.6rem;
+  border-radius: 50px;
+  border: none;
+  background: transparent;
+  color: var(--clr-text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.menu-tab.active {
+  background: var(--clr-ocean);
+  color: var(--clr-white);
+  box-shadow: 0 2px 10px rgba(49, 88, 165, 0.25);
+}
+
+.menu-tab:hover:not(.active) {
+  color: var(--clr-secondary);
+  background: rgba(204, 104, 24, 0.08);
+}
+
+/* ------ Panel fade ------ */
+.menu-panel {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.menu-panel.active {
+  display: block;
+}
+
+.menu-panel.is-visible {
+  opacity: 1;
+}
+
+/* ------ Food & Drink carousel ------ */
+.menu-carousel {
+  position: relative;
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 0 4rem;      /* breathing room for nav arrows */
+}
+
+.menu-carousel-track {
+  position: relative;
+  /* paper / pin-board background */
+  background:
+    radial-gradient(circle at 30% 30%, rgba(245,217,143,0.12) 0%, transparent 60%),
+    var(--clr-bg-alt);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Individual menu pages */
+.menu-page {
+  display: none;
+}
+
+.menu-page.active {
+  display: block;
+  animation: menuPageIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes menuPageIn {
+  from { opacity: 0; transform: translateX(14px) rotate(0.3deg); }
+  to   { opacity: 1; transform: translateX(0)    rotate(0.3deg); }
+}
+
+/* The book/paper feel on the image */
+.menu-page img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 3px;
+  transform: rotate(0.3deg);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow:
+    4px  4px  0   rgba(0, 0, 0, 0.04),
+    8px  8px  0   rgba(0, 0, 0, 0.025),
+    6px 16px 32px rgba(0, 0, 0, 0.14),
+    -3px 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.menu-page img:hover {
+  transform: rotate(0deg) scale(1.01);
+  box-shadow:
+    4px  4px  0   rgba(0, 0, 0, 0.04),
+    10px 16px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* Navigation arrows */
+.menu-carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  background: var(--clr-white);
+  border: 2px solid var(--clr-sky);
+  color: var(--clr-ocean);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  z-index: 5;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-soft);
+}
+
+.menu-carousel-nav:hover {
+  background: var(--clr-ocean);
+  color: var(--clr-white);
+  border-color: var(--clr-ocean);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.menu-carousel-prev { left: 0; }
+.menu-carousel-next { right: 0; }
+
+/* Dots */
+.menu-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 1.25rem;
+}
+
+.menu-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(204, 104, 24, 0.3);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition);
+}
+
+.menu-dot.active {
+  background: var(--clr-secondary);
+  width: 28px;
+  border-radius: 5px;
+}
+
+/* ------ Tea List PDF ------ */
+.pdf-frame-wrapper {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lifted);
+}
+
+.pdf-iframe {
+  width: 100%;
+  height: 72vh;
+  min-height: 520px;
+  border: none;
+  display: block;
+}
+
+.btn-fullscreen {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--ff-heading);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--clr-ocean);
+  border: 2px solid var(--clr-sky);
+  background: var(--clr-white);
+  padding: 0.4rem 1.1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.btn-fullscreen:hover {
+  background: var(--clr-ocean);
+  color: var(--clr-white);
+  border-color: var(--clr-ocean);
+}
+
+/* Mobile: hide iframe, show card instead */
+.pdf-mobile { display: none; }
+
+.pdf-mobile-card {
+  background: var(--clr-white);
+  border-radius: var(--radius);
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.pdf-mobile-card i.bi-file-earmark-pdf-fill {
+  font-size: 3.5rem;
+  color: var(--clr-secondary);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.pdf-mobile-card h4 {
+  font-family: var(--ff-heading);
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: var(--clr-text);
+}
+
+.pdf-mobile-card p {
+  font-size: 0.95rem;
+  color: var(--clr-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* ------ Responsive ------ */
+@media (max-width: 768px) {
+  .menu-carousel {
+    padding: 0 2.75rem;   /* tighter on mobile, arrows stay inside */
+  }
+
+  .pdf-desktop { display: none; }
+  .pdf-mobile  { display: block; }
+}
+
+@media (max-width: 480px) {
+  .menu-tab {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* ----------------------------------------------------------
    TEA-O-METER SECTION
    ---------------------------------------------------------- */
 .section-teaometer {
   padding: 6rem 0;
-  background: var(--clr-bg-alt);
+  background: var(--clr-bg);
 }
 
 .teaometer-widget {
@@ -1019,7 +1286,7 @@ img {
    ---------------------------------------------------------- */
 .section-gallery {
   padding: 6rem 0;
-  background: var(--clr-bg);
+  background: var(--clr-bg-alt);
 }
 
 /* Scrapbook card — thick border, shadow, slight random tilt */
@@ -1250,7 +1517,7 @@ img {
    ---------------------------------------------------------- */
 .section-contact {
   padding: 6rem 0;
-  background: var(--clr-bg-alt);
+  background: var(--clr-bg);
 }
 
 .contact-details {

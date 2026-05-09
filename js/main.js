@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDynamicEvents();
   initShopHours();
   initDynamicGallery();
+  initMenuSection();
 });
 
 // ----------------------------------------------------------
@@ -237,7 +238,7 @@ function initTeaOMeter() {
 function initScrollAnimations() {
   // Add fade-in class to all sections except hero
   const sections = document.querySelectorAll(
-    '.section-about, .section-events, .section-teaometer, .section-gallery, .section-contact, .section-booking'
+    '.section-about, .section-events, .section-menu, .section-teaometer, .section-gallery, .section-contact, .section-booking'
   );
 
   sections.forEach(section => {
@@ -798,4 +799,121 @@ function isLightColor(hex) {
   const g = parseInt(c.substring(2, 4), 16);
   const b = parseInt(c.substring(4, 6), 16);
   return (r * 0.299 + g * 0.587 + b * 0.114) > 160;
+}
+
+// ----------------------------------------------------------
+// 10. MENU SECTION — Food & Drink carousel + Tea List PDF tabs
+// ----------------------------------------------------------
+function initMenuSection() {
+  initMenuCarousel();
+  initMenuTabs();
+}
+
+/**
+ * Food & Drink carousel — 3 menu images, prev/next, dots, touch swipe.
+ */
+function initMenuCarousel() {
+  const track  = document.getElementById('menuCarouselTrack');
+  const dotsEl = document.getElementById('menuDots');
+  const prevBtn = document.getElementById('menuPrev');
+  const nextBtn = document.getElementById('menuNext');
+  if (!track) return;
+
+  const MENU_PAGES = [
+    {
+      src: 'images/menu/Menu_1_Hot-Drinks-Smoothies.jpeg',
+      alt: 'Menu page 1 — Hot Drinks & Smoothies'
+    },
+    {
+      src: 'images/menu/Menu_2_Sandwiches.jpeg',
+      alt: 'Menu page 2 — Sandwiches'
+    },
+    {
+      src: 'images/menu/Menu_3_Cold-Drinks-Cakes-Treats.jpeg',
+      alt: 'Menu page 3 — Cold Drinks, Cakes & Treats'
+    }
+  ];
+
+  let currentPage = 0;
+
+  // Build page divs
+  track.innerHTML = MENU_PAGES.map((p, i) => `
+    <div class="menu-page${i === 0 ? ' active' : ''}" data-index="${i}">
+      <img src="${p.src}" alt="${p.alt}" loading="${i === 0 ? 'eager' : 'lazy'}" />
+    </div>`
+  ).join('');
+
+  // Build indicator dots
+  dotsEl.innerHTML = MENU_PAGES.map((_, i) =>
+    `<button class="menu-dot${i === 0 ? ' active' : ''}" aria-label="Menu page ${i + 1}"></button>`
+  ).join('');
+
+  /** Navigate to a page by index (wraps). */
+  function goTo(index) {
+    const pages = track.querySelectorAll('.menu-page');
+    const dots  = dotsEl.querySelectorAll('.menu-dot');
+    currentPage = ((index % MENU_PAGES.length) + MENU_PAGES.length) % MENU_PAGES.length;
+
+    pages.forEach((p, i) => p.classList.toggle('active', i === currentPage));
+    dots.forEach((d, i)  => d.classList.toggle('active', i === currentPage));
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', () => goTo(currentPage - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => goTo(currentPage + 1));
+
+  // Dot clicks — re-query after initial build so handlers are always fresh
+  dotsEl.addEventListener('click', e => {
+    const dot = e.target.closest('.menu-dot');
+    if (!dot) return;
+    const idx = [...dotsEl.querySelectorAll('.menu-dot')].indexOf(dot);
+    if (idx !== -1) goTo(idx);
+  });
+
+  // Touch swipe — no external library needed
+  let touchStartX = 0;
+  track.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+
+  track.addEventListener('touchend', e => {
+    const delta = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 48) {
+      goTo(currentPage + (delta > 0 ? 1 : -1));
+    }
+  }, { passive: true });
+}
+
+/**
+ * Menu tab toggle — fades between Food & Drink and Tea List panels.
+ */
+function initMenuTabs() {
+  const tabs = document.querySelectorAll('.menu-tab');
+  if (!tabs.length) return;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetId    = tab.dataset.target;
+      const targetPanel = document.getElementById(targetId);
+      if (!targetPanel) return;
+
+      // Update ARIA + active class on tabs
+      tabs.forEach(t => {
+        t.classList.toggle('active', t === tab);
+        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+      });
+
+      // Fade out every non-target panel
+      document.querySelectorAll('.menu-panel').forEach(panel => {
+        if (panel === targetPanel) return;
+        panel.classList.remove('is-visible');
+        panel.addEventListener('transitionend', () => {
+          panel.classList.remove('active');
+        }, { once: true });
+      });
+
+      // Fade in target panel
+      targetPanel.classList.add('active');
+      requestAnimationFrame(() => targetPanel.classList.add('is-visible'));
+    });
+  });
 }
