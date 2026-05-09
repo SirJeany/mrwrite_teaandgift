@@ -882,16 +882,9 @@ img {
 .section-menu {
   padding: 6rem 0;
   /* Slightly lighter than bg-alt so it reads distinct from Tea-O-Meter below */
-  background: var(--clr-bg);
+  background: var(--clr-bg-alt);
   /* Subtle horizontal rule top — mirrors the events section stripe */
   border-top: 4px solid transparent;
-  border-image: repeating-linear-gradient(
-    90deg,
-    var(--clr-primary)   0px,  var(--clr-primary)   20px,
-    var(--clr-secondary) 20px, var(--clr-secondary) 40px,
-    var(--clr-ocean)     40px, var(--clr-ocean)     60px,
-    var(--clr-red)       60px, var(--clr-red)       80px
-  ) 1;
 }
 
 /* ------ Tab toggle ------ */
@@ -1155,7 +1148,7 @@ img {
    ---------------------------------------------------------- */
 .section-teaometer {
   padding: 6rem 0;
-  background: var(--clr-bg-alt);
+  background: var(--clr-bg);
 }
 
 .teaometer-widget {
@@ -1293,7 +1286,7 @@ img {
    ---------------------------------------------------------- */
 .section-gallery {
   padding: 6rem 0;
-  background: var(--clr-bg);
+  background: var(--clr-bg-alt);
 }
 
 /* Scrapbook card — thick border, shadow, slight random tilt */
@@ -1524,7 +1517,7 @@ img {
    ---------------------------------------------------------- */
 .section-contact {
   padding: 6rem 0;
-  background: var(--clr-bg-alt);
+  background: var(--clr-bg);
 }
 
 .contact-details {
