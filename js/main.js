@@ -316,10 +316,10 @@ function initDynamicEvents() {
    * light:true means the block needs dark text (Sky blue is too light).
    */
   const ACCENT_COLORS = [
-    { bg: '#3158a5', light: false }, // Ocean
-    { bg: '#ea1c29', light: false }, // Red
-    { bg: '#cc6818', light: false }, // Orange
-    { bg: '#b5d3ed', light: true  }, // Sky
+    { bg: '#3158a5', rgb: '49,88,165',   light: false }, // Ocean
+    { bg: '#ea1c29', rgb: '234,28,41',   light: false }, // Red
+    { bg: '#cc6818', rgb: '204,104,24',  light: false }, // Orange
+    { bg: '#b5d3ed', rgb: '181,211,237', light: true  }, // Sky
   ];
 
   const PAGE_SIZE   = 5;          // cards shown on initial load
@@ -386,7 +386,7 @@ function initDynamicEvents() {
 
     return `
       <div class="event-row"
-           style="--accent:${accent.bg}; --stagger:${stagger};"
+           style="--accent:${accent.bg}; --accent-rgb:${accent.rgb}; --stagger:${stagger};"
            ${lightAttr}>
         <div class="event-date-block" ${lightAttr}>
           <span class="event-date-day">${dayName}</span>
