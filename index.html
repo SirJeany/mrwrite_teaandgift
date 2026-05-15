@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Mr. Write Tea & Gift Shop — Hermanus's quirkiest coastal tea room. Loose-leaf teas, handmade gifts, live music & whale-watching vibes." />
+  <meta name="description" content="Mr. Write Tea & Gift Shop - Hermanus's quirkiest coastal tea room. Loose-leaf teas, handmade gifts, live music & whale-watching vibes." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,12 +26,12 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <title>Mr. Write Tea & Gift Shop — Hermanus</title>
+  <title>Mr. Write Tea & Gift Shop - Hermanus</title>
 </head>
 <body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="80">
 
   <!-- ============================================================
-       NAVBAR — Sticky top, transparent-to-solid on scroll
+       NAVBAR - Sticky top, transparent-to-solid on scroll
        ============================================================ -->
   <nav id="mainNav" class="navbar navbar-expand-lg fixed-top">
     <div class="container">
@@ -58,7 +58,7 @@
   </nav>
 
   <!-- ============================================================
-       HERO SECTION — Big headline + steaming cup animation
+       HERO SECTION - Big headline + steaming cup animation
        ============================================================ -->
   <section id="home" class="hero-section d-flex align-items-center">
     <!-- Decorative wave overlay at bottom -->
@@ -73,12 +73,12 @@
         <div class="col-lg-7 hero-text">
           <p class="hero-tagline m-3">Hermanus's Quirkiest Teahouse</p>
           <h1 class="hero-headline m-3">
-            You’ve found <span class="highlight">Mr. Write’s</span> <br>
+            You've found <span class="highlight">Mr. Write's</span> <br>
             Tea and Gift Café
           </h1>
           <p class="hero-sub m-3">
-            Book a high tea, drop in for something warm, or join us for an event. 
-            It’s easygoing, a little unexpected, and built for lingering.
+            Book a high tea, drop in for something warm, or join us for an event.
+            It's easygoing, a little unexpected, and built for lingering.
           </p>
           <div class="hero-cta">
             <a href="booking.html" class="btn btn-primary btn-lg me-3 m-3">Book a High Tea</a>
@@ -139,25 +139,25 @@
           <h6 class="section-overline">The spacefaring maltese pup</h6>
           <h2 class="section-heading">A little shop with a <span class="highlight">story</span></h2>
           <p class="section-body">
-            In 2024, we started as a small gift shop tucked behind an art gallery. 
-            Today, Mr. Write is a café filled with second-hand books, coffee, 
+            In 2024, we started as a small gift shop tucked behind an art gallery.
+            Today, Mr. Write is a café filled with second-hand books, coffee,
             proper tea, and sandwiches worth the wait.
           </p>
           <p class="section-body">
-            Our story is guided by our mascot: a Maltese poodle who journeyed into space to find "Mr. Right." 
-            But after orbiting the stars, they noticed something: the cosmos is very big and very cold, 
+            Our story is guided by our mascot: a Maltese poodle who journeyed into space to find "Mr. Right."
+            But after orbiting the stars, they noticed something: the cosmos is very big and very cold,
             and it notably lacks a good cup of tea.
           </p>
           <p class="section-body">
-            They realised that "Mr. Right" isn’t always a soulmate waiting to be found; 
+            They realised that "Mr. Right" isn't always a soulmate waiting to be found;
             it is the warmth of a room, the weight of a book, and the feeling of finally being home.
           </p>
           <p class="section-body">
-            They traded the cosmos for this colourful, dimly lit corner that feels like the living room of a childhood home. 
-            We’ve kept it that way: a slightly random and very intentional place for community.
+            They traded the cosmos for this colourful, dimly lit corner that feels like the living room of a childhood home.
+            We've kept it that way: a slightly random and very intentional place for community.
           </p>
           <p class="section-body">
-            Join us and sit quietly with a book/laptop or loudly with friends! 
+            Join us and sit quietly with a book/laptop or loudly with friends!
             We hope you leave with that fuzzy feeling of having arrived exactly where you belong.
           </p>
 
@@ -181,55 +181,49 @@
   </section>
 
   <!-- ============================================================
-       EVENTS CAROUSEL — "What's On Next"
+       EVENTS CAROUSEL - "What's On Next"
        ============================================================ -->
   <section id="events" class="section-events">
     <div class="container">
       <div class="text-center mb-5">
         <h6 class="section-overline">What's On Next</h6>
         <h2 class="section-heading">Upcoming <span class="highlight">Events</span></h2>
-        <p class="section-subtitle">Live music, tea tastings, and quirky happenings — there's always something brewing.</p>
+        <p class="section-subtitle">Live music, tea tastings, and quirky happenings - there's always something brewing.</p>
       </div>
 
-      <!-- Peek Carousel — populated dynamically from events API -->
-      <div class="peek-carousel" id="eventsCarousel">
-        <div class="peek-track" id="eventsTrack">
-          <!-- JS-generated event cards -->
-        </div>
+      <!-- Events vertical list — populated dynamically from events API -->
+      <div class="events-list" id="eventsList">
+        <!-- JS-generated event rows -->
+      </div>
 
-        <!-- Navigation -->
-        <button class="peek-nav peek-prev" id="eventsPrev" aria-label="Previous event">
-          <i class="bi bi-chevron-left"></i>
+      <!-- See More toggle -->
+      <div class="events-see-more" id="eventsSeeMore" style="display:none;">
+        <button class="btn-see-more" id="btnSeeMore">
+          <i class="bi bi-chevron-down"></i> See More Events
         </button>
-        <button class="peek-nav peek-next" id="eventsNext" aria-label="Next event">
-          <i class="bi bi-chevron-right"></i>
-        </button>
-
-        <!-- Indicators -->
-        <div class="peek-indicators" id="eventsIndicators"></div>
       </div>
 
       <!-- Fallback message (hidden by default, shown on error) -->
       <div id="eventsError" class="text-center" style="display: none;">
-        <p class="section-subtitle"><i class="bi bi-cup-hot-fill"></i> Something's brewing… check back soon for events!</p>
+        <p class="section-subtitle"><i class="bi bi-cup-hot-fill"></i> Something’s brewing… check back soon for events!</p>
       </div>
     </div>
   </section>
 
   <!-- ============================================================
-       BOOKING CTA — Drive bookings to booking.html
+       BOOKING CTA - Drive bookings to booking.html
        ============================================================ -->
   <section id="booking-section" class="section-booking">
     <div class="container text-center">
       <h6 class="section-overline">Plan Ahead</h6>
       <h2 class="section-heading">Reserve Your <span class="highlight">High Tea</span> Experience</h2>
-      <p class="section-subtitle mb-4">Gather friends, celebrate small moments, or treat yourself — our high tea is best enjoyed with company. Choose a date, pick a package, and we'll have everything ready.</p>
+      <p class="section-subtitle mb-4">Gather friends, celebrate small moments, or treat yourself - our high tea is best enjoyed with company. Choose a date, pick a package, and we'll have everything ready.</p>
       <a href="booking.html" class="btn btn-booking" role="button">Reserve a Table</a>
     </div>
   </section>
 
   <!-- ============================================================
-       THE MENU — Food & Drink carousel + Tea List PDF viewer
+       THE MENU - Food & Drink carousel + Tea List PDF viewer
        ============================================================ -->
   <section id="menu" class="section-menu">
     <div class="container">
@@ -237,7 +231,7 @@
       <div class="text-center mb-4">
         <h6 class="section-overline">What's Cooking</h6>
         <h2 class="section-heading">Our <span class="highlight">Menu</span></h2>
-        <p class="section-subtitle">From the kitchen to the teapot — everything we brew, bake, and serve.</p>
+        <p class="section-subtitle">From the kitchen to the teapot - everything we brew, bake, and serve.</p>
       </div>
 
       <!-- Tab toggle -->
@@ -305,7 +299,7 @@
           </div>
         </div>
 
-        <!-- Mobile: no scroll-trap — open PDF directly -->
+        <!-- Mobile: no scroll-trap - open PDF directly -->
         <div class="pdf-mobile">
           <div class="pdf-mobile-card">
             <i class="bi bi-file-earmark-pdf-fill"></i>
@@ -325,7 +319,7 @@
   </section>
 
   <!-- ============================================================
-       TEA-O-METER — Mood-based tea recommendation widget
+       TEA-O-METER - Mood-based tea recommendation widget
        ============================================================ -->
   <section id="tea-o-meter" class="section-teaometer">
     <div class="container">
@@ -382,7 +376,7 @@
   </section>
 
   <!-- ============================================================
-       GALLERY — Bootstrap card grid with hover zoom
+       GALLERY - Bootstrap card grid with hover zoom
        ============================================================ -->
   <section id="gallery" class="section-gallery">
     <div class="container">
@@ -392,7 +386,7 @@
         <p class="section-subtitle">A little window into the world of Mr. Write.</p>
       </div>
 
-      <!-- Dynamic gallery grid — populated from data/gallery.json -->
+      <!-- Dynamic gallery grid - populated from data/gallery.json -->
       <div class="row g-4" id="galleryGrid">
         <!-- Cards injected by JS -->
       </div>
@@ -439,7 +433,7 @@
           <h6 class="section-overline">Get in Touch</h6>
           <h2 class="section-heading">Come Say <span class="highlight">Hello</span></h2>
           <p class="section-body">
-            We'd love to see you! Pop in for a cuppa, give us a ring, or find us on socials. 
+            We'd love to see you! Pop in for a cuppa, give us a ring, or find us on socials.
             The door's always open (well, during trading hours at least 😉).
           </p>
 
@@ -456,7 +450,7 @@
               <i class="bi bi-clock-fill"></i>
               <div>
                 <strong>Trading Hours</strong><br/>
-                <span id="tradingHours">Loading hours…</span>
+                <span id="tradingHours">Loading hours...</span>
               </div>
             </div>
             <div class="contact-item">
@@ -503,7 +497,7 @@
         <div class="col-lg-6">
           <div class="map-wrapper">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3291.347422808631!2d19.241130776581546!3d-34.417929247711555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dce0b00408a36e7%3A0x178914b205d06710!2sMr.%20Write!5e0!3m2!1sen!2sza!4v1775978701809!5m2!1sen!2sza" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3291.347422808631!2d19.241130776581546!3d-34.417929247711555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dce0b00408a36e7%3A0x178914b205d06710!2sMr.%20Write!5e0!3m2!1sen!2sza!4v1775978701809!5m2!1sen!2sza"
               width="100%"
               height="400"
               style="border:0; border-radius: 1rem;"

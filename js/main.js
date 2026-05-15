@@ -297,183 +297,187 @@ function setCurrentYear() {
 }
 
 // ----------------------------------------------------------
-// 7. DYNAMIC EVENTS — Peek carousel loaded from remote API
+// 7. DYNAMIC EVENTS — Vertical list loaded from remote API
 // ----------------------------------------------------------
 function initDynamicEvents() {
-  const carouselEl    = document.getElementById('eventsCarousel');
-  const trackEl       = document.getElementById('eventsTrack');
-  const indicatorsEl  = document.getElementById('eventsIndicators');
-  const prevBtn       = document.getElementById('eventsPrev');
-  const nextBtn       = document.getElementById('eventsNext');
-  const errorEl       = document.getElementById('eventsError');
+  const listEl    = document.getElementById('eventsList');
+  const seeMoreEl = document.getElementById('eventsSeeMore');
+  const btnMore   = document.getElementById('btnSeeMore');
+  const errorEl   = document.getElementById('eventsError');
 
-  // Only run on pages that have the carousel track
-  if (!trackEl || !indicatorsEl) return;
+  // Only run on pages that have the events list
+  if (!listEl) return;
 
   const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN',
                   'JUL','AUG','SEP','OCT','NOV','DEC'];
 
-  /** Parse a YYYY-MM-DD string into a local-midnight Date. */
+  /**
+   * Brand palette cycled across rows.
+   * light:true means the block needs dark text (Sky blue is too light).
+   */
+  const ACCENT_COLORS = [
+    { bg: '#3158a5', light: false }, // Ocean
+    { bg: '#ea1c29', light: false }, // Red
+    { bg: '#cc6818', light: false }, // Orange
+    { bg: '#b5d3ed', light: true  }, // Sky
+  ];
+
+  const PAGE_SIZE   = 5;          // cards shown on initial load
+  let allEvents     = [];         // full sorted & filtered list
+  let visibleCount  = PAGE_SIZE;  // how many are currently rendered
+
+  /** Parse YYYY-MM-DD into a local-midnight Date (avoids UTC offset shift). */
   function parseDate(dateStr) {
     const [y, m, d] = dateStr.split('-').map(Number);
     return new Date(y, m - 1, d);
   }
 
-  /** Build a single event card's inner HTML. */
-  function buildEventCard(evt) {
-    const d       = parseDate(evt.date);
-    const dayNum  = String(d.getDate()).padStart(2, '0');
-    const month   = MONTHS[d.getMonth()];
-    const dayName = evt.day || d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
-    const iconClass = evt.icon || 'bi-calendar-event';
+  /**
+   * Build ?from=YYYY-MM-DD&to=YYYY-MM-DD query string.
+   *   from = today at midnight  → include today's events
+   *   to   = last day of next calendar month → healthy buffer
+   * Recurring events already carry the correct occurrence date from the API.
+   */
+  function buildDateRange() {
+    const pad = n => String(n).padStart(2, '0');
+    const fmt = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
-    // If the API provided a calendarLink, ensure the description is passed through.
-    let calendarHref = evt.calendarLink || '';
-    if (calendarHref && evt.description) {
+    const from = new Date();
+    from.setHours(0, 0, 0, 0);
+
+    // Day 0 of the month-after-next = last day of next month
+    const to = new Date(from.getFullYear(), from.getMonth() + 2, 0);
+
+    return `from=${fmt(from)}&to=${fmt(to)}`;
+  }
+
+  /** Augment calendarLink with event description if the param is absent. */
+  function buildCalendarHref(evt) {
+    let href = evt.calendarLink || '';
+    if (href && evt.description) {
       try {
-        const url = new URL(calendarHref);
-        // Common param names for event description/details
-        if (!url.searchParams.has('details') && !url.searchParams.has('description') && !url.searchParams.has('text')) {
+        const url = new URL(href);
+        if (!url.searchParams.has('details') && !url.searchParams.has('description')) {
           url.searchParams.append('details', evt.description);
         }
-        calendarHref = url.toString();
-      } catch (e) {
-        // If URL parsing fails, append a details param safely
-        calendarHref = `${calendarHref}${calendarHref.includes('?') ? '&' : '?'}details=${encodeURIComponent(evt.description)}`;
+        href = url.toString();
+      } catch {
+        href += `${href.includes('?') ? '&' : '?'}details=${encodeURIComponent(evt.description)}`;
       }
     }
+    return href;
+  }
+
+  /**
+   * Build HTML for one event row.
+   * @param {object} evt        - event object from API
+   * @param {number} colorIndex - absolute position in allEvents (drives colour)
+   * @param {number} stagger    - per-batch delay index (0-based, restarts each "See More")
+   */
+  function buildRow(evt, colorIndex, stagger) {
+    const d         = parseDate(evt.date);
+    const dayNum    = String(d.getDate()).padStart(2, '0');
+    const month     = MONTHS[d.getMonth()];
+    const dayName   = d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+    const accent    = ACCENT_COLORS[colorIndex % ACCENT_COLORS.length];
+    const iconCls   = evt.icon || 'bi-calendar-event';
+    const href      = buildCalendarHref(evt);
+    const lightAttr = accent.light ? 'data-light="true"' : '';
 
     return `
-      <div class="event-card">
-        <div class="event-card-icon"><i class="bi ${iconClass}"></i></div>
-        <div class="event-card-date">
-          <span class="event-day">${dayName}</span>
-          <span class="event-num">${dayNum}</span>
-          <span class="event-month">${month}</span>
+      <div class="event-row"
+           style="--accent:${accent.bg}; --stagger:${stagger};"
+           ${lightAttr}>
+        <div class="event-date-block" ${lightAttr}>
+          <span class="event-date-day">${dayName}</span>
+          <span class="event-date-num">${dayNum}</span>
+          <span class="event-date-month">${month}</span>
         </div>
-        <h3 class="event-card-title">${evt.title}</h3>
-        <p class="event-card-desc">${evt.description}</p>
-        <span class="event-card-time"><i class="bi bi-clock"></i> ${evt.time}</span>
-        ${calendarHref ? `<a href="${calendarHref}" target="_blank" rel="noopener noreferrer" class="btn btn-calendar"><i class="bi bi-calendar-plus"></i> Add to Calendar</a>` : ''}
+        <div class="event-content">
+          <h3 class="event-row-title">${evt.title}</h3>
+          ${evt.description
+            ? `<p class="event-row-desc">${evt.description}</p>`
+            : ''}
+          <div class="event-content-meta">
+            <span class="event-row-icon"><i class="bi ${iconCls}"></i></span>
+            <span class="event-row-time"><i class="bi bi-clock"></i> ${evt.time}</span>
+          </div>
+        </div>
+        ${href ? `
+        <div class="event-action">
+          <a href="${href}"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="btn-event-add"
+             aria-label="Add ${evt.title} to calendar">
+            <i class="bi bi-calendar-plus"></i> Add
+          </a>
+        </div>` : ''}
       </div>`;
   }
 
-  /** Show the error fallback and hide the carousel. */
+  /** Render allEvents[startIdx..endIdx] with stagger starting at staggerBase. */
+  function renderSlice(startIdx, endIdx, staggerBase) {
+    return allEvents
+      .slice(startIdx, endIdx)
+      .map((evt, i) => buildRow(evt, startIdx + i, staggerBase + i))
+      .join('');
+  }
+
+  /** Hide list and show friendly fallback. */
   function showError() {
-    if (carouselEl) carouselEl.style.display = 'none';
-    if (errorEl)    errorEl.style.display = 'block';
+    listEl.style.display = 'none';
+    if (seeMoreEl) seeMoreEl.style.display = 'none';
+    if (errorEl)   errorEl.style.display   = 'block';
   }
 
-  // ------- Peek carousel state & logic -------
-  let events = [];
-  let currentIndex = 0;
-  let autoplayTimer = null;
+  // ---- Fetch & render ----
+  const fetchUrl = `${EVENTS_API_URL}?${buildDateRange()}`;
 
-  /** Assigns peek-left / peek-active / peek-right / peek-hidden classes. */
-  function updatePositions() {
-    const cards = trackEl.querySelectorAll('.peek-card');
-    const total = cards.length;
-    if (total === 0) return;
-
-    cards.forEach((card, i) => {
-      card.classList.remove('peek-left', 'peek-active', 'peek-right', 'peek-hidden');
-
-      if (i === currentIndex) {
-        card.classList.add('peek-active');
-      } else if (i === (currentIndex - 1 + total) % total) {
-        card.classList.add('peek-left');
-      } else if (i === (currentIndex + 1) % total) {
-        card.classList.add('peek-right');
-      } else {
-        card.classList.add('peek-hidden');
-      }
-    });
-
-    // Update indicator dots
-    const dots = indicatorsEl.querySelectorAll('.peek-dot');
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === currentIndex);
-    });
-  }
-
-  function goTo(index) {
-    const total = events.length;
-    currentIndex = ((index % total) + total) % total;
-    updatePositions();
-    resetAutoplay();
-  }
-
-  function goNext() { goTo(currentIndex + 1); }
-  function goPrev() { goTo(currentIndex - 1); }
-
-  function resetAutoplay() {
-    clearInterval(autoplayTimer);
-    autoplayTimer = setInterval(goNext, 5000);
-  }
-
-  // ------- Fetch & render -------
-  fetch(EVENTS_API_URL)
+  fetch(fetchUrl)
     .then(res => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return res.json();
     })
     .then(data => {
+      // Client-side safety: filter to today onwards and sort ascending
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      const upcoming = data.filter(evt => parseDate(evt.date) >= today);
+      allEvents = data
+        .filter(evt => parseDate(evt.date) >= today)
+        .sort((a, b) => parseDate(a.date) - parseDate(b.date));
 
-      if (upcoming.length === 0) {
-        showError();
-        return;
-      }
+      if (allEvents.length === 0) { showError(); return; }
 
-      upcoming.sort((a, b) => parseDate(a.date) - parseDate(b.date));
-      events = upcoming;
+      // Render first batch
+      const initialCount = Math.min(PAGE_SIZE, allEvents.length);
+      listEl.innerHTML = renderSlice(0, initialCount, 0);
 
-      // Build peek cards
-      trackEl.innerHTML = upcoming
-        .map((evt, i) => {
-          const posClass = i === 0 ? 'peek-active'
-            : i === upcoming.length - 1 && upcoming.length > 2 ? 'peek-left'
-            : i === 1 ? 'peek-right'
-            : 'peek-hidden';
-          return `<div class="peek-card ${posClass}">${buildEventCard(evt)}</div>`;
-        })
-        .join('');
-
-      // Build indicator dots
-      indicatorsEl.innerHTML = upcoming
-        .map((_, i) =>
-          `<button class="peek-dot${i === 0 ? ' active' : ''}" aria-label="Event ${i + 1}"></button>`
-        )
-        .join('');
-
-      // Attach dot click handlers
-      indicatorsEl.querySelectorAll('.peek-dot').forEach((dot, i) => {
-        dot.addEventListener('click', () => goTo(i));
-      });
-
-      // Nav buttons
-      if (prevBtn) prevBtn.addEventListener('click', goPrev);
-      if (nextBtn) nextBtn.addEventListener('click', goNext);
-
-      // Hide nav if only 1 event
-      if (upcoming.length <= 1) {
-        if (prevBtn) prevBtn.style.display = 'none';
-        if (nextBtn) nextBtn.style.display = 'none';
-      }
-
-      // Start autoplay
-      resetAutoplay();
-
-      // Pause autoplay on hover
-      if (carouselEl) {
-        carouselEl.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
-        carouselEl.addEventListener('mouseleave', resetAutoplay);
+      // Show "See More" toggle if there are more to show
+      if (allEvents.length > PAGE_SIZE && seeMoreEl) {
+        seeMoreEl.style.display = 'block';
       }
     })
     .catch(() => showError());
+
+  // ---- "See More" ----
+  if (btnMore) {
+    btnMore.addEventListener('click', () => {
+      if (visibleCount >= allEvents.length) return;
+
+      const prevCount = visibleCount;
+      visibleCount = Math.min(visibleCount + PAGE_SIZE, allEvents.length);
+
+      // Append new rows; stagger resets to 0 for each incoming batch
+      listEl.insertAdjacentHTML('beforeend', renderSlice(prevCount, visibleCount, 0));
+
+      // Hide toggle once all events are visible
+      if (visibleCount >= allEvents.length && seeMoreEl) {
+        seeMoreEl.style.display = 'none';
+      }
+    });
+  }
 }
 
 // ----------------------------------------------------------
