@@ -818,6 +818,10 @@ img {
     white-space: normal;
   }
 
+  .event-row-icon {
+    display: none;
+  }
+
   /* Push Add button to its own row on very small screens */
   .event-action {
     margin-left: auto;
