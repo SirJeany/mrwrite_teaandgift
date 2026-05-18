@@ -131,74 +131,44 @@ function initTeaOMeter() {
   const teaRecommendations = {
     happy: [
       {
-        emoji: '🌸',
-        name: 'Jasmine Green Tea',
-        desc: 'Light, floral, and sunshine in a cup — just like your mood! Perfect for keeping those good vibes going.'
-      },
-      {
         emoji: '🍑',
-        name: 'Peach Oolong',
-        desc: 'Sweet, fruity, and smooth — a tea that matches your sunny disposition perfectly.'
+        name: 'Marula Peach',
+        desc: 'Live without checking the clock. Sweet, sun-ripened peach meets the wild African marula — a cup that tastes like a good day feels.'
       }
     ],
     stressed: [
       {
-        emoji: '🌿',
-        name: 'Chamomile & Lavender',
-        desc: 'Take a deep breath. This gentle herbal blend is like a warm hug for your nerves. You\'ve got this.'
-      },
-      {
-        emoji: '🫖',
-        name: 'Peppermint Rooibos',
-        desc: 'Caffeine-free and cooling — let the tension melt away with every sip. The ocean is right outside.'
+        emoji: '🌼',
+        name: 'Chamomile Flower',
+        desc: 'Feel soothed. Pure chamomile blossoms, brewed to quiet the noise and remind you that everything is going to be fine.'
       }
     ],
     sleepy: [
       {
         emoji: '⚡',
-        name: 'English Breakfast (Strong!)',
-        desc: 'Rise and shine! This bold, malty classic will get your engine running. Two sugars? Go wild.'
-      },
-      {
-        emoji: '🍵',
-        name: 'Yerba Maté Boost',
-        desc: 'Nature\'s energy drink. Smooth, earthy, and packed with the pick-me-up you need right now.'
+        name: 'Roasted Yerba Mate',
+        desc: 'Wake you up. Deep, roasted, and earthy — this South American classic delivers a smooth, sustained lift without the jitters. Rise and shine.'
       }
     ],
     adventurous: [
       {
-        emoji: '🌶️',
-        name: 'Chai Masala (Spicy!)',
-        desc: 'Bold spices, warm ginger, a kick of pepper — this brew matches your daring spirit. Fortune favours the spiced!'
-      },
-      {
-        emoji: '🫧',
-        name: 'Butterfly Pea Flower Tea',
-        desc: 'Starts blue, add lemon and watch it turn purple! As wild and wonderful as your adventurous soul.'
+        emoji: '😈',
+        name: "Devil's Advocate",
+        desc: "Shake you up. We can't tell you what's in it — that would spoil the fun. Bold, unexpected, and not for the faint-hearted."
       }
     ],
     cozy: [
       {
-        emoji: '🍫',
-        name: 'Chocolate Rooibos',
-        desc: 'Rich, creamy, and caffeine-free — like wrapping yourself in a warm blanket on a rainy Hermanus day.'
-      },
-      {
-        emoji: '🍯',
-        name: 'Honeybush & Vanilla',
-        desc: 'Sweet, mellow, and uniquely South African. The perfect companion for a good book and a comfy chair.'
+        emoji: '🍚',
+        name: 'Genmaicha',
+        desc: 'Roasted rice and green tea. A Japanese classic with a toasty, nutty warmth — like a cosy kitchen on a cool Hermanus morning.'
       }
     ],
     fancy: [
       {
-        emoji: '🫅',
-        name: 'Earl Grey Supreme',
-        desc: 'Bergamot-kissed, elegant, and refined — pinky up, darling. You deserve nothing less than the finest.'
-      },
-      {
-        emoji: '🌹',
-        name: 'Rose Petal Darjeeling',
-        desc: 'The "Champagne of Teas" meets delicate rose petals. Exquisite, just like your taste.'
+        emoji: '👑',
+        name: 'Jasmine Bai Hao Oolong',
+        desc: "Once reserved for China's Imperial Court. Delicate jasmine over a silky oolong base — complex, fragrant, and utterly refined. Pinky up."
       }
     ]
   };
