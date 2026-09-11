@@ -131,9 +131,9 @@ function initTeaOMeter() {
   const teaRecommendations = {
     happy: [
       {
-        emoji: '🍑',
-        name: 'Marula Peach',
-        desc: 'Live without checking the clock. Sweet, sun-ripened peach meets the wild African marula — a cup that tastes like a good day feels.'
+        emoji: '🍵',
+        name: 'Matcha Latte',
+        desc: 'Live without checking the clock. Sweet, sun-kissed green tea meets the waves of Hermanus — a cup that tastes like a good day feels.'
       }
     ],
     stressed: [
